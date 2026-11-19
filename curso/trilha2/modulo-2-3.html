@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 2.3 — Instalando no Mac | Claude Code Open</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    pre { overflow-x: auto; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🤖</span>
+            <span class="font-bold text-lg hidden sm:inline">Claude Code Open</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Instalação</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Ollama</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span><span class="hidden sm:inline">OpenRouter</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span><span class="hidden sm:inline">Na Prática</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-blue-400">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2 — Instalação</a>
+      <span>/</span>
+      <span class="text-blue-400">Módulo 2.3 — Mac</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">
+        MÓDULO 2.3
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🍎 Instalando no Mac</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Instalação no macOS com Homebrew ou nvm. Configuração do terminal zsh e dicas para máxima produtividade.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">6</div>
+          <div class="text-xs text-neutral-400">Tópicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">25</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Iniciante</div>
+          <div class="text-xs text-neutral-400">Nível</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Prático</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">🍺 Pré-requisitos macOS</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O macOS moderno (Ventura, Sonoma, Sequoia) tem o zsh como shell padrão. Para instalar ferramentas de desenvolvimento, precisamos do <strong class="text-blue-400">Homebrew</strong> e das <strong class="text-blue-400">Xcode Command Line Tools</strong>.
+      </p>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">🍺</span> Instalando o Homebrew
+        </h3>
+        <p class="text-neutral-300 mb-4">Homebrew é o gerenciador de pacotes não-oficial mais popular do macOS. Instala tudo em <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">/opt/homebrew</code> (Apple Silicon) ou <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">/usr/local</code> (Intel).</p>
+        <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># Instalar Homebrew (copie e cole no Terminal)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# O instalador pedirá sua senha de usuário
+# e instalará as Xcode CLI Tools automaticamente
+
+# Verificar instalação
+brew --version
+# Esperado: Homebrew 4.x.x</code></pre>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Apple Silicon (M1/M2/M3) vs Intel
+        </h3>
+        <p class="text-neutral-300 mb-2">Se você tem um Mac com chip Apple Silicon, o Homebrew é instalado em <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">/opt/homebrew</code>. O instalador adiciona o PATH automaticamente, mas se o <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">brew</code> não for encontrado após instalar, execute:</p>
+        <pre class="bg-dark-700 rounded-lg p-3 text-xs overflow-x-auto"><code class="text-green-400">echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
+source ~/.zshrc</code></pre>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">🟢 Node.js no Mac</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        No macOS, você pode instalar Node.js via Homebrew ou via nvm. Para uso com Claude Code, ambos funcionam, mas o <strong class="text-blue-400">nvm é recomendado</strong> para desenvolvedores que gerenciam múltiplos projetos.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-semibold text-blue-400 mb-4">Método A: Homebrew (simples)</h4>
+          <pre class="bg-dark-700 rounded-lg p-3 text-xs overflow-x-auto"><code class="text-green-400"># Instalar Node.js via brew
+brew install node
+
+# Verificar
+node -v
+npm -v</code></pre>
+          <p class="text-neutral-400 text-xs mt-3">Ideal para uso simples. Gerenciado pelo Homebrew.</p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-semibold text-blue-400 mb-4">Método B: nvm (recomendado)</h4>
+          <pre class="bg-dark-700 rounded-lg p-3 text-xs overflow-x-auto"><code class="text-green-400"># Instalar nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+source ~/.zshrc
+
+# Instalar Node LTS
+nvm install --lts
+node -v</code></pre>
+          <p class="text-neutral-400 text-xs mt-3">Ideal para múltiplos projetos com versões diferentes.</p>
+        </div>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Verificação completa</h3>
+        <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># Verificar versões instaladas
+node -v    # Deve ser v18 ou superior
+npm -v     # Deve ser v9 ou superior
+
+# Verificar onde está instalado
+which node
+# Via nvm: /Users/usuario/.nvm/versions/node/v20.x.x/bin/node
+# Via brew: /opt/homebrew/bin/node (Apple Silicon)
+#           /usr/local/bin/node (Intel)</code></pre>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">⬇️ Instalando o Claude Code</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Com Node.js instalado no macOS, o processo de instalação do Claude Code é idêntico ao Linux. Atenção às peculiaridades do Gatekeeper do macOS em primeiros usos.
+      </p>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Instalar via npm</h4>
+            <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># Instalar Claude Code globalmente
+npm install -g @anthropic-ai/claude-code
+
+# Verificar instalação
+claude --version
+which claude</code></pre>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Primeiro uso — Gatekeeper</h4>
+            <p class="text-sm text-neutral-400 mb-3">Na primeira execução, o macOS pode bloquear com "cannot be opened because it is from an unidentified developer". Solução:</p>
+            <pre class="bg-dark-700 rounded-lg p-3 text-xs overflow-x-auto"><code class="text-green-400"># Se aparecer aviso do Gatekeeper:
+# Vá em: Apple Menu → System Settings →
+# Privacy & Security → "Allow Anyway"
+# OU use xattr para remover o quarantine:
+xattr -d com.apple.quarantine $(which claude)</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">📝 Configurando o .zshrc no macOS</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O macOS usa zsh desde o Catalina (2019). O arquivo <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">~/.zshrc</code> é carregado em cada sessão interativa e é onde configuramos as variáveis de ambiente permanentes.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Configuração completa do ~/.zshrc</h3>
+        <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># Abrir o .zshrc no editor padrão
+open -e ~/.zshrc
+# OU usar nano:
+nano ~/.zshrc
+
+# Adicionar ao FINAL do arquivo:
+
+# === Homebrew (Apple Silicon) ===
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# === nvm ===
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# === Claude Code ===
+export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
+export ANTHROPIC_AUTH_TOKEN="sk-or-v1-SUA-CHAVE"
+
+# Salvar e aplicar:
+source ~/.zshrc</code></pre>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> .zshrc vs .zprofile no macOS
+        </h3>
+        <p class="text-neutral-300 mb-2"><strong>.zshrc</strong> — carregado em sessões interativas (Terminal, iTerm2). Use para variáveis do Claude Code.<br><strong>.zprofile</strong> — carregado em sessões de login. Use para PATH e configurações do Homebrew em Apple Silicon.</p>
+        <pre class="bg-dark-700 rounded-lg p-3 text-xs overflow-x-auto mt-3"><code class="text-green-400"># Verificar qual arquivo está sendo usado:
+echo $ZDOTDIR
+# Verificar se variáveis estão ativas:
+env | grep ANTHROPIC</code></pre>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">🔑 Primeiro Login no Mac</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O macOS tem excelente integração com o Safari para autenticação OAuth. O processo de login é fluido e seguro, com opção de armazenar credenciais no Keychain.
+      </p>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">A</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Via variável de ambiente (recomendado)</h4>
+            <pre class="bg-dark-700 rounded-lg p-3 text-xs overflow-x-auto"><code class="text-green-400"># Configure no .zshrc e aplique:
+source ~/.zshrc
+
+# Teste:
+claude -p "Olá do macOS!"</code></pre>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">B</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Via browser nativo</h4>
+            <p class="text-sm text-neutral-400 mb-3">Execute <code class="bg-dark-700 px-1 rounded">claude</code> sem variáveis. O Safari abrirá automaticamente no Anthropic Console. Após login, o token é salvo localmente.</p>
+            <pre class="bg-dark-700 rounded-lg p-3 text-xs overflow-x-auto"><code class="text-green-400">claude
+# Safari abre → login → token salvo
+# Não precisa configurar variável!</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">🖥️ Terminal.app vs iTerm2</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Terminal.app nativo funciona bem com o Claude Code. Mas o <strong class="text-blue-400">iTerm2</strong> oferece uma experiência significativamente melhor com recursos como divisão de painéis, melhor suporte a cores e integração com shells.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-semibold text-blue-400 mb-4">Terminal.app (Nativo)</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Já instalado no macOS</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Integração com macOS Keychain</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Zero configuração necessária</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Sem divisão de painéis</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Suporte limitado a cores 256</span></li>
+          </ul>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-semibold text-blue-400 mb-4">iTerm2 (Recomendado)</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Divisão de painéis horizontais/verticais</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>True color (16M cores)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Perfis de sessão configuráveis</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Melhor suporte a Unicode/emojis</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Gratuito e open source</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Instalação e configuração do iTerm2</h3>
+        <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># Instalar iTerm2 via Homebrew
+brew install --cask iterm2
+
+# Ou baixar em: iterm2.com/downloads.html
+
+# Configurações recomendadas para Claude Code:
+# 1. Preferences → Profiles → Colors
+#    → Color Presets → Solarized Dark (ou seu tema favorito)
+# 2. Preferences → Profiles → Text
+#    → Font: JetBrains Mono 13pt
+# 3. Preferences → Profiles → Terminal
+#    → Report Terminal Type: xterm-256color
+
+# Instalar fonte JetBrains Mono:
+brew tap homebrew/cask-fonts
+brew install --cask font-jetbrains-mono</code></pre>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">🎯</span> Resumo do Módulo 2.3
+        </h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Homebrew instalado</strong>
+              <span class="text-neutral-400"> — gerenciador de pacotes do macOS</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Node.js via nvm ou Homebrew</strong>
+              <span class="text-neutral-400"> — versão LTS 18+ instalada</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Claude Code instalado</strong>
+              <span class="text-neutral-400"> — sem erros do Gatekeeper</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">.zshrc configurado</strong>
+              <span class="text-neutral-400"> — variáveis de ambiente permanentes</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Terminal otimizado</strong>
+              <span class="text-neutral-400"> — iTerm2 com fontes e cores configuradas</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">2.4 — 🖥️ Instalando em VPS — setup completo em Ubuntu 22.04 com tmux</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-2-2.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Módulo 2.2: Linux
+          </a>
+          <a href="modulo-2-4.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
+            Próximo: VPS →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Claude Code Open — <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> — 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

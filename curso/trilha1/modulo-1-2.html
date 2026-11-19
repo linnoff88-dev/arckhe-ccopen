@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 1.2 — Como Claude Code Funciona | Claude Code Open</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    pre { overflow-x: auto; }
+
+    /* Light mode overrides */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - cores emerald */
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .bg-emerald-900\/40 { background-color: rgba(5, 150, 105, 0.10); }
+
+    /* Light mode - remove gradientes */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+
+    /* Light mode - cores especiais */
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.20); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.20); }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.20); }
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Code blocks */
+    .code-block {
+      background-color: #0d1117;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+    }
+    html:not(.dark) .code-block {
+      background-color: #1e293b;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300 transition-colors">
+            <span class="text-2xl">🤖</span>
+            <span class="font-bold text-lg hidden sm:inline">Claude Code Open</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Instalação</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Ollama Local</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">OpenRouter</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Na Prática</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="border-b border-dark-700">
+    <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center space-x-2 text-sm text-neutral-400">
+        <a href="../../index.html" class="hover:text-emerald-400 transition-colors">Início</a>
+        <span>/</span>
+        <a href="index.html" class="hover:text-emerald-400 transition-colors">Trilha 1 — Fundamentos</a>
+        <span>/</span>
+        <span class="text-emerald-400">Módulo 1.2</span>
+      </div>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.2</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">⚙️ Como Claude Code Funciona</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Entenda o fluxo interno completo: como Claude Code recebe sua mensagem, decide quais ferramentas usar, executa ações reais no projeto e itera até completar a tarefa.
+      </p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Tópicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">25</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Básico</div>
+          <div class="text-xs text-neutral-400">Nível</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Teoria</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- SEÇÃO 1: O fluxo de uma tarefa -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">🔄 O fluxo de uma tarefa</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Quando você digita algo no Claude Code, não é simplesmente uma mensagem enviada ao modelo. Existe um <strong class="text-emerald-400">loop agente</strong> inteiro acontecendo: CC empacota contexto, envia ao modelo, recebe tool calls, executa-as, e itera até completar a tarefa.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🔄</span> O Loop Completo
+        </h3>
+        <div class="space-y-3 text-neutral-300 text-sm">
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 font-bold w-6 text-center">1</span>
+            <span><strong>Usuário</strong> digita: "Refatora a função auth() para usar async/await"</span>
+          </div>
+          <div class="flex justify-center text-neutral-500">↓</div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 font-bold w-6 text-center">2</span>
+            <span><strong>Claude Code</strong> empacota: mensagem + CLAUDE.md + histórico da sessão</span>
+          </div>
+          <div class="flex justify-center text-neutral-500">↓</div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 font-bold w-6 text-center">3</span>
+            <span><strong>Modelo LLM</strong> responde com tool call: <code class="text-emerald-400">Read("src/auth.js")</code></span>
+          </div>
+          <div class="flex justify-center text-neutral-500">↓</div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 font-bold w-6 text-center">4</span>
+            <span><strong>CC executa</strong> a ferramenta e retorna o conteúdo do arquivo ao modelo</span>
+          </div>
+          <div class="flex justify-center text-neutral-500">↓</div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 font-bold w-6 text-center">5</span>
+            <span><strong>Modelo</strong> lê o código e responde com <code class="text-emerald-400">Edit("src/auth.js", ...)</code></span>
+          </div>
+          <div class="flex justify-center text-neutral-500">↓</div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 font-bold w-6 text-center">6</span>
+            <span><strong>CC aplica</strong> a edição e exibe a resposta final ao usuário</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Por que isso importa
+        </h3>
+        <p class="text-neutral-300">Tarefas complexas podem ter <strong class="text-primary">10, 20 ou 50 iterações</strong> de tool calls antes de terminar. É normal ver Claude Code "pensando" por alguns minutos em tarefas grandes. Cada iteração consome tokens — por isso a janela de contexto importa.</p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 2: Ferramentas disponíveis -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">📄 Ferramentas disponíveis</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Claude Code disponibiliza um conjunto de <strong class="text-emerald-400">ferramentas nativas</strong> que o modelo pode invocar. Cada ferramenta tem um propósito específico e diferentes implicações de segurança.
+      </p>
+
+      <div class="space-y-4 mb-6">
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-mono rounded">Read</span>
+            <h4 class="font-semibold">Leitura de Arquivos</h4>
+          </div>
+          <p class="text-neutral-400 text-sm mb-3">Lê o conteúdo de qualquer arquivo do projeto. Operação somente leitura — nunca modifica nada.</p>
+          <div class="code-block text-sm">
+            <span class="text-neutral-500"># Exemplo de uso pelo modelo:</span><br>
+            <span class="text-emerald-400">Read</span>(<span class="text-yellow-400">"src/components/Button.tsx"</span>)<br>
+            <span class="text-emerald-400">Read</span>(<span class="text-yellow-400">"package.json"</span>)<br>
+            <span class="text-emerald-400">Read</span>(<span class="text-yellow-400">"src/**/*.ts"</span>, offset=<span class="text-blue-400">100</span>, limit=<span class="text-blue-400">50</span>)
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs font-mono rounded">Edit</span>
+            <h4 class="font-semibold">Edição de Arquivos</h4>
+          </div>
+          <p class="text-neutral-400 text-sm mb-3">Substitui um trecho específico de um arquivo existente. Mais seguro que Write — não apaga o arquivo inteiro.</p>
+          <div class="code-block text-sm">
+            <span class="text-neutral-500"># Substitui old_string por new_string no arquivo:</span><br>
+            <span class="text-blue-400">Edit</span>(<br>
+            &nbsp;&nbsp;file_path=<span class="text-yellow-400">"src/auth.js"</span>,<br>
+            &nbsp;&nbsp;old_string=<span class="text-yellow-400">"function login(user) {"</span>,<br>
+            &nbsp;&nbsp;new_string=<span class="text-yellow-400">"async function login(user) {"</span><br>
+            )
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-mono rounded">Write</span>
+            <h4 class="font-semibold">Criação/Sobrescrita de Arquivos</h4>
+          </div>
+          <p class="text-neutral-400 text-sm mb-3">Cria um novo arquivo ou sobrescreve um existente com conteúdo completo. Usado para novos arquivos ou rewrites completos.</p>
+          <div class="code-block text-sm">
+            <span class="text-neutral-500"># Cria ou sobrescreve completamente:</span><br>
+            <span class="text-purple-400">Write</span>(<br>
+            &nbsp;&nbsp;file_path=<span class="text-yellow-400">"src/utils/format.ts"</span>,<br>
+            &nbsp;&nbsp;content=<span class="text-yellow-400">"export function formatDate..."</span><br>
+            )
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="px-2 py-1 bg-red-500/20 text-red-400 text-xs font-mono rounded">Bash</span>
+            <h4 class="font-semibold">Execução de Comandos</h4>
+          </div>
+          <p class="text-neutral-400 text-sm mb-3">Executa qualquer comando bash. A ferramenta mais poderosa — e a que pede confirmação por padrão. Pode rodar testes, instalar pacotes, git, etc.</p>
+          <div class="code-block text-sm">
+            <span class="text-neutral-500"># Exemplos reais de uso:</span><br>
+            <span class="text-red-400">Bash</span>(<span class="text-yellow-400">"npm test"</span>)<br>
+            <span class="text-red-400">Bash</span>(<span class="text-yellow-400">"git diff HEAD"</span>)<br>
+            <span class="text-red-400">Bash</span>(<span class="text-yellow-400">"npm install axios"</span>)<br>
+            <span class="text-red-400">Bash</span>(<span class="text-yellow-400">"find . -name '*.test.ts'"</span>)
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-mono rounded">WebSearch</span>
+            <h4 class="font-semibold">Busca na Web</h4>
+          </div>
+          <p class="text-neutral-400 text-sm mb-3">Busca informações atualizadas na internet. Útil para documentação de API, erros de dependências e informações que não estão no projeto.</p>
+          <div class="code-block text-sm">
+            <span class="text-neutral-500"># Busca informações externas:</span><br>
+            <span class="text-amber-400">WebSearch</span>(<span class="text-yellow-400">"React 19 useTransition changes"</span>)<br>
+            <span class="text-amber-400">WebSearch</span>(<span class="text-yellow-400">"axios 1.6 breaking changes"</span>)
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> MCP expande as ferramentas
+        </h3>
+        <p class="text-neutral-300">O <strong class="text-primary">Model Context Protocol (MCP)</strong> permite adicionar ferramentas externas: banco de dados, Slack, GitHub, Jira, e qualquer API. As trilhas avançadas cobrem MCP em detalhes.</p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 3: Janela de contexto -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">🪟 Janela de contexto</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A janela de contexto é o <strong class="text-emerald-400">espaço de memória de trabalho</strong> do modelo. Tudo que ele "vê" durante a sessão — conversa, arquivos lidos, resultados de comandos — ocupa tokens nessa janela. Quando enche, informações antigas são descartadas.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4">O que ocupa tokens na janela</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 text-center">
+            <div class="text-2xl mb-2">💬</div>
+            <div class="font-semibold text-sm mb-1">Histórico de conversa</div>
+            <div class="text-neutral-400 text-xs">Todas as mensagens trocadas na sessão</div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4 text-center">
+            <div class="text-2xl mb-2">📄</div>
+            <div class="font-semibold text-sm mb-1">Conteúdo de arquivos</div>
+            <div class="text-neutral-400 text-xs">Cada arquivo lido via ferramenta Read</div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4 text-center">
+            <div class="text-2xl mb-2">⚡</div>
+            <div class="font-semibold text-sm mb-1">Resultados de comandos</div>
+            <div class="text-neutral-400 text-xs">Output de cada comando Bash executado</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Limites típicos por modelo
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-neutral-400 border-b border-dark-600">
+                <th class="text-left pb-2">Modelo</th>
+                <th class="text-left pb-2">Janela de Contexto</th>
+                <th class="text-left pb-2">Aprox. em código</th>
+              </tr>
+            </thead>
+            <tbody class="text-neutral-300">
+              <tr class="border-b border-dark-700">
+                <td class="py-2">Claude Sonnet/Opus</td>
+                <td class="py-2 text-emerald-400">200.000 tokens</td>
+                <td class="py-2">~5.000 arquivos médios</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-2">Qwen3.5-397B</td>
+                <td class="py-2 text-blue-400">128.000 tokens</td>
+                <td class="py-2">~3.000 arquivos médios</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-2">Llama 3.3 70B</td>
+                <td class="py-2 text-neutral-400">128.000 tokens</td>
+                <td class="py-2">~3.000 arquivos médios</td>
+              </tr>
+              <tr>
+                <td class="py-2">Gemma 3 27B</td>
+                <td class="py-2 text-red-400">8.192 tokens</td>
+                <td class="py-2">~200 arquivos médios</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3">💡 Dica: autoCompactThreshold</h3>
+        <p class="text-neutral-300 mb-3">Configure no settings.json para compactar automaticamente quando atingir 75% da janela:</p>
+        <div class="code-block text-sm">
+          {<br>
+          &nbsp;&nbsp;<span class="text-yellow-400">"autoCompactThreshold"</span>: <span class="text-blue-400">75</span><br>
+          }
+        </div>
+        <p class="text-neutral-400 text-sm mt-3">Ou use <code class="text-primary">/compact</code> manualmente quando sentir a sessão pesada.</p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 4: O arquivo CLAUDE.md -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">📝 O arquivo CLAUDE.md</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        CLAUDE.md é o arquivo de <strong class="text-emerald-400">instruções persistentes</strong> do Claude Code. Ele é lido automaticamente no início de cada sessão e inserido no contexto do modelo — como um system prompt personalizado para o seu projeto.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4">Exemplo de CLAUDE.md básico</h3>
+        <div class="code-block text-sm">
+          <span class="text-neutral-500"># CLAUDE.md — Projeto: E-commerce API</span><br><br>
+          <span class="text-emerald-400">## Stack</span><br>
+          - Node.js 20 + Express 5<br>
+          - PostgreSQL com Prisma ORM<br>
+          - TypeScript strict mode<br><br>
+          <span class="text-emerald-400">## Convenções</span><br>
+          - Funções async/await (nunca callbacks)<br>
+          - Erros via Result type (nunca throw direto)<br>
+          - Testes em Jest, coverage mínimo 80%<br><br>
+          <span class="text-emerald-400">## Estrutura</span><br>
+          - src/routes/ — apenas roteamento<br>
+          - src/services/ — lógica de negócio<br>
+          - src/repositories/ — acesso ao banco<br><br>
+          <span class="text-emerald-400">## Importante</span><br>
+          - Nunca commitar .env<br>
+          - Rodar `npm test` antes de qualquer commit
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que colocar no CLAUDE.md</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Stack tecnológica e versões</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Convenções de código do projeto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Estrutura de pastas importante</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Comandos de build/test do projeto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Regras e restrições específicas</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NÃO colocar</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Senhas ou chaves de API</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Informações que mudam frequentemente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Todo o README do projeto (muito longo)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Exemplos de código extensos</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Instruções para outras ferramentas</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 5: Permissões e segurança -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">🔒 Permissões e segurança</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Claude Code tem um sistema de permissões para proteger seu sistema. Por padrão, operações destrutivas precisam de confirmação. Você pode <strong class="text-emerald-400">relaxar ou restringir</strong> essas permissões no settings.json.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4">Comportamento padrão por ferramenta</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-neutral-400 border-b border-dark-600">
+                <th class="text-left pb-2">Ferramenta</th>
+                <th class="text-left pb-2">Padrão</th>
+                <th class="text-left pb-2">Risco</th>
+              </tr>
+            </thead>
+            <tbody class="text-neutral-300">
+              <tr class="border-b border-dark-700">
+                <td class="py-2 font-mono text-emerald-400">Read</td>
+                <td class="py-2 text-emerald-400">Automático</td>
+                <td class="py-2 text-emerald-400">Baixo</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-2 font-mono text-blue-400">Edit / Write</td>
+                <td class="py-2 text-yellow-400">Automático (com diff)</td>
+                <td class="py-2 text-yellow-400">Médio</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-2 font-mono text-red-400">Bash</td>
+                <td class="py-2 text-red-400">Pede confirmação</td>
+                <td class="py-2 text-red-400">Alto</td>
+              </tr>
+              <tr>
+                <td class="py-2 font-mono text-amber-400">WebSearch</td>
+                <td class="py-2 text-emerald-400">Automático</td>
+                <td class="py-2 text-emerald-400">Baixo</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4">Configurando permissões no settings.json</h3>
+        <div class="code-block text-sm">
+          {<br>
+          &nbsp;&nbsp;<span class="text-yellow-400">"permissions"</span>: {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-neutral-500">// Permite Bash sem confirmar (use com cuidado):</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"allow"</span>: [<span class="text-green-400">"Bash"</span>],<br><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-neutral-500">// Ou apenas comandos específicos:</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"allow"</span>: [<span class="text-green-400">"Bash(npm test)"</span>, <span class="text-green-400">"Bash(git *)"</span>],<br><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-neutral-500">// Bloqueia completamente:</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"deny"</span>: [<span class="text-red-400">"Bash(rm *)"</span>]<br>
+          &nbsp;&nbsp;}<br>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 6: ANTHROPIC_BASE_URL -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">🔌 ANTHROPIC_BASE_URL</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        <strong class="text-emerald-400">ANTHROPIC_BASE_URL</strong> é a variável que determina para onde Claude Code envia as chamadas de API. Por padrão, aponta para <code class="text-neutral-400">https://api.anthropic.com</code>. Troque para Ollama ou OpenRouter e use de graça.
+      </p>
+
+      <div class="space-y-4 mb-6">
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-semibold text-emerald-400 mb-3">Para Ollama (local)</h4>
+          <div class="code-block text-sm">
+            <span class="text-neutral-500"># No settings.json:</span><br>
+            {<br>
+            &nbsp;&nbsp;<span class="text-yellow-400">"env"</span>: {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"ANTHROPIC_BASE_URL"</span>: <span class="text-green-400">"http://localhost:11434"</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"ANTHROPIC_API_KEY"</span>: <span class="text-green-400">"ollama"</span><br>
+            &nbsp;&nbsp;}<br>
+            }
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-semibold text-blue-400 mb-3">Para OpenRouter (nuvem)</h4>
+          <div class="code-block text-sm">
+            <span class="text-neutral-500"># No settings.json:</span><br>
+            {<br>
+            &nbsp;&nbsp;<span class="text-yellow-400">"env"</span>: {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"ANTHROPIC_BASE_URL"</span>: <span class="text-green-400">"https://openrouter.ai/api/v1"</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"ANTHROPIC_API_KEY"</span>: <span class="text-green-400">"sk-or-v1-sua-chave-aqui"</span><br>
+            &nbsp;&nbsp;}<br>
+            }
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-semibold text-amber-400 mb-3">Ou via variável de ambiente (sessão)</h4>
+          <div class="code-block text-sm">
+            <span class="text-neutral-500"># Linux / Mac (apenas sessão atual):</span><br>
+            <span class="text-emerald-400">export</span> ANTHROPIC_BASE_URL=<span class="text-green-400">"http://localhost:11434"</span><br>
+            <span class="text-emerald-400">export</span> ANTHROPIC_API_KEY=<span class="text-green-400">"ollama"</span><br><br>
+            <span class="text-neutral-500"># Depois abra o Claude Code normalmente:</span><br>
+            claude
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> settings.json > export
+        </h3>
+        <p class="text-neutral-300">Prefira configurar no <strong class="text-primary">settings.json</strong> em vez de export. O settings persiste entre sessões e não precisa ser repetido toda vez que você abre o terminal. As Trilhas 2, 3 e 4 ensinam a configuração passo a passo para cada opção.</p>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">✅</span> Resumo do Módulo 1.2
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Loop agente</strong>
+              <span class="text-neutral-400"> — CC itera entre modelo e ferramentas até completar a tarefa</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">5 ferramentas nativas</strong>
+              <span class="text-neutral-400"> — Read, Edit, Write, Bash, WebSearch</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Janela de contexto</strong>
+              <span class="text-neutral-400"> — memória limitada, gerenciar com /compact ou autoCompactThreshold</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">CLAUDE.md</strong>
+              <span class="text-neutral-400"> — instruções persistentes lidas automaticamente em cada sessão</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">ANTHROPIC_BASE_URL</strong>
+              <span class="text-neutral-400"> — o "interruptor" para trocar o motor de modelo</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">1.3 — 📋 Conceitos Essenciais: tokens, compactação, API Key, settings.json e variáveis de ambiente</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-1-1.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Módulo Anterior
+          </a>
+          <a href="modulo-1-3.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">
+            Próximo Módulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Claude Code Open — <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> — 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

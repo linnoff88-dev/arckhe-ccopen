@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 4.1 - O que é OpenRouter | Claude Code Open</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217, 119, 6, 0.18); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .text-blue-400 { color: #1d4ed8; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🤖</span>
+            <span class="font-bold text-lg hidden sm:inline">Claude Code Open</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Instalação</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Ollama</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10">
+            <span class="sm:hidden">T4</span><span class="hidden sm:inline">OpenRouter</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span><span class="hidden sm:inline">Na Prática</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-amber-400">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-amber-400">Trilha 4</a>
+      <span>/</span>
+      <span class="text-amber-400">Módulo 4.1</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MÓDULO 4.1</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">☁️ O que é OpenRouter</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">OpenRouter é um roteador de APIs que dá acesso a dezenas de modelos LLM, incluindo versões gratuitas de ponta como Qwen3-Coder, Devstral e Kimi K2.5.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Tópicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">20</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Básico</div>
+          <div class="text-xs text-neutral-400">Nível</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Teoria</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- SECAO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">☁️ O que é OpenRouter</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        OpenRouter é um <strong class="text-amber-400">gateway de API unificado</strong> que dá acesso a dezenas de modelos LLM diferentes através de um único endpoint. Em vez de gerenciar múltiplas contas e chaves de API, você usa apenas um ponto de acesso para GPT, Claude, Llama, Mistral, Qwen e mais.
+      </p>
+
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">☁️</span> Conceito: Marketplace de APIs
+        </h3>
+        <p class="text-neutral-300 mb-4">Pense no OpenRouter como um "shopping center" de modelos de IA. Você vai a um único lugar e tem acesso a todos os fornecedores:</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong>OpenAI</strong> — GPT-4o, GPT-4o mini</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong>Anthropic</strong> — Claude Sonnet, Claude Haiku</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong>Meta</strong> — Llama 3.1, Llama 3.3</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong>Mistral</strong> — Devstral, Mistral Large</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong>Alibaba</strong> — Qwen3-Coder, Qwen2.5</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong>DeepSeek</strong> — V3.1, R1</span></li>
+        </ul>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Dados
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>100+</strong> modelos disponíveis no catálogo</li>
+          <li><strong>API compatível com OpenAI</strong> — zero mudança de código para migrar</li>
+          <li><strong>Endpoint único:</strong> https://openrouter.ai/api</li>
+          <li><strong>Modelos :free</strong> disponíveis sem custo por token</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SECAO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">💰 Tier Gratuito</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O OpenRouter oferece um tier gratuito generoso com modelos identificados pelo sufixo <strong class="text-amber-400">:free</strong>. Esses modelos custam literalmente $0 por token — você pode usar sem adicionar cartão de crédito ou créditos à conta.
+      </p>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Importante
+        </h3>
+        <p class="text-neutral-300">Modelos com sufixo <strong>:free</strong> custam <strong>$0 por token</strong>. Isso significa que você pode fazer milhares de chamadas sem pagar nada. A distinção é clara no nome do modelo: <code class="bg-dark-700 px-2 py-0.5 rounded text-amber-400">qwen/qwen3-coder:free</code> vs <code class="bg-dark-700 px-2 py-0.5 rounded text-red-400">qwen/qwen3-coder</code> (pago).</p>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden mb-6">
+        <div class="px-6 py-4 bg-dark-700 border-b border-dark-600">
+          <h3 class="font-semibold text-amber-400">Comparativo de Limites por Plano</h3>
+        </div>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-dark-600">
+              <th class="px-6 py-3 text-left text-neutral-400 font-medium">Situação</th>
+              <th class="px-6 py-3 text-left text-neutral-400 font-medium">Req/dia (modelos :free)</th>
+              <th class="px-6 py-3 text-left text-neutral-400 font-medium">Custo</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-dark-600">
+            <tr>
+              <td class="px-6 py-3 text-neutral-300">Sem créditos ($0)</td>
+              <td class="px-6 py-3 text-amber-400 font-semibold">50 req/dia</td>
+              <td class="px-6 py-3 text-neutral-300">$0</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-3 text-neutral-300">Com $10+ em créditos</td>
+              <td class="px-6 py-3 text-amber-400 font-semibold">1000 req/dia</td>
+              <td class="px-6 py-3 text-neutral-300">$0 (créditos não consumidos)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECAO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">📊 Limites de Uso</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Os limites diários existem para evitar abuso do tier gratuito. O contador reseta à meia-noite UTC todos os dias. Para a maioria dos desenvolvedores, 50 req/dia é suficiente para sessões normais de trabalho.
+      </p>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> Atenção
+        </h3>
+        <p class="text-neutral-300">O limite diário reseta à <strong>meia-noite UTC</strong>. Se você atingir o limite no início do dia, precisará esperar até a virada. Planeje sessões longas de desenvolvimento para quando tiver mais requests disponíveis.</p>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Estratégia Recomendada
+        </h3>
+        <p class="text-neutral-300 mb-3">Adicionar <strong>$10 uma vez</strong> à conta libera limites maiores permanentemente. Os créditos <strong>não são consumidos</strong> pelos modelos :free — eles apenas desbloqueiam o limite de 1000 req/dia.</p>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-primary mt-1">✓</span><span>$10 depositado = 1000 req/dia para sempre</span></li>
+          <li class="flex items-start space-x-2"><span class="text-primary mt-1">✓</span><span>Créditos ficam disponíveis caso queira usar modelos pagos</span></li>
+          <li class="flex items-start space-x-2"><span class="text-primary mt-1">✓</span><span>Pode levar meses para gastar $10 em uso ocasional de modelos pagos</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SECAO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">🏆 Modelos Disponíveis</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O OpenRouter hospeda mais de 100 modelos, mas para uso com Claude Code em 2026, os melhores modelos gratuitos para código são:
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden mb-6">
+        <div class="px-6 py-4 bg-dark-700 border-b border-dark-600">
+          <h3 class="font-semibold text-amber-400">Top Modelos :free para Código (Abril 2026)</h3>
+        </div>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-dark-600">
+              <th class="px-6 py-3 text-left text-neutral-400 font-medium">Modelo</th>
+              <th class="px-6 py-3 text-left text-neutral-400 font-medium">Contexto</th>
+              <th class="px-6 py-3 text-left text-neutral-400 font-medium">Nota</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-dark-600">
+            <tr>
+              <td class="px-6 py-3 text-neutral-300 font-mono text-xs">qwen/qwen3-coder:free</td>
+              <td class="px-6 py-3 text-amber-400 font-semibold">262K</td>
+              <td class="px-6 py-3 text-neutral-300">🥇 Melhor geral para código</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-3 text-neutral-300 font-mono text-xs">mistralai/devstral-2:free</td>
+              <td class="px-6 py-3 text-amber-400 font-semibold">256K</td>
+              <td class="px-6 py-3 text-neutral-300">🥈 Excelente multi-arquivo</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-3 text-neutral-300 font-mono text-xs">moonshotai/kimi-k2.5:free</td>
+              <td class="px-6 py-3 text-amber-400 font-semibold">256K</td>
+              <td class="px-6 py-3 text-neutral-300">🥉 Ótimo para geral</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-3 text-neutral-300 font-mono text-xs">deepseek/deepseek-v3.1:free</td>
+              <td class="px-6 py-3 text-amber-400 font-semibold">131K</td>
+              <td class="px-6 py-3 text-neutral-300">4️⃣ Rápido e otimizado</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECAO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">👤 Criando Conta</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Criar uma conta no OpenRouter é simples e não requer cartão de crédito para o tier gratuito. Siga os passos abaixo:
+      </p>
+
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <span class="text-amber-400 font-bold">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Acesse openrouter.ai</h4>
+            <p class="text-sm text-neutral-400 mb-2">Passo inicial</p>
+            <p class="text-neutral-300 text-sm">Abra o navegador e acesse <strong class="text-amber-400">https://openrouter.ai</strong>. A página inicial mostra os modelos disponíveis e os preços.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <span class="text-amber-400 font-bold">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Clique em Sign Up</h4>
+            <p class="text-sm text-neutral-400 mb-2">Criação de conta</p>
+            <p class="text-neutral-300 text-sm">No canto superior direito, clique em <strong>Sign Up</strong>. Você pode criar conta com email ou usar login social (Google, GitHub).</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <span class="text-amber-400 font-bold">3</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Verifique o email</h4>
+            <p class="text-sm text-neutral-400 mb-2">Verificação obrigatória</p>
+            <p class="text-neutral-300 text-sm">Você receberá um email de verificação. Clique no link para confirmar sua conta. Sem verificação, não é possível gerar API keys.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <span class="text-amber-400 font-bold">4</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Acesse o dashboard</h4>
+            <p class="text-sm text-neutral-400 mb-2">Conta pronta</p>
+            <p class="text-neutral-300 text-sm">Após verificar, você terá acesso ao dashboard em <strong class="text-amber-400">openrouter.ai/settings</strong> onde gerencia chaves, créditos e monitora uso.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECAO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">🔑 Gerando API Key</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A API Key é seu token de autenticação. Ela começa com <strong class="text-amber-400">sk-or-</strong> e é exibida apenas uma vez no momento da criação — guarde-a imediatamente.
+      </p>
+
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <span class="text-amber-400 font-bold">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Acesse o Dashboard</h4>
+            <p class="text-neutral-300 text-sm">Vá para <strong class="text-amber-400">openrouter.ai/settings/keys</strong> ou navegue pelo menu: Settings → API Keys.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <span class="text-amber-400 font-bold">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Clique em Create Key</h4>
+            <p class="text-neutral-300 text-sm">Dê um nome descritivo à chave (ex: "claude-code-dev") e clique em <strong>Create</strong>.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <span class="text-amber-400 font-bold">3</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Copie e guarde imediatamente</h4>
+            <p class="text-neutral-300 text-sm">A chave aparece no formato <code class="bg-dark-700 px-1 rounded text-amber-400 text-xs">sk-or-v1-xxxxxxxxxxxxxxxx</code>. Copie-a agora — ela não será mostrada novamente.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">🔒</span> Segurança da API Key
+        </h3>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nunca compartilhe sua chave publicamente (GitHub, fóruns, redes sociais)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Não commite a chave em repositórios git</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400">✓</span><span>Use variáveis de ambiente ou o settings.json do Claude Code</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400">✓</span><span>Se vazar, revogue imediatamente no dashboard e gere uma nova</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">✅</span> Resumo do Módulo 4.1
+        </h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">OpenRouter</strong><span class="text-neutral-400"> — gateway unificado para 100+ modelos LLM via API compatível com OpenAI</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">Tier gratuito</strong><span class="text-neutral-400"> — modelos :free custam $0 por token, disponíveis sem cartão de crédito</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">Limites</strong><span class="text-neutral-400"> — 50 req/dia sem créditos, 1000 req/dia com $10+, reset à meia-noite UTC</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">Conta e API Key</strong><span class="text-neutral-400"> — criar em openrouter.ai, verificar email, gerar chave sk-or- no dashboard</span></div>
+          </div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-amber-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">4.2 — 🔧 Configuração Completa — configure todos os slots de modelo para não ser cobrado acidentalmente</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Voltar para Trilha 4
+          </a>
+          <a href="modulo-4-2.html" class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors">
+            Próximo Módulo →
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Claude Code Open - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

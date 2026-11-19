@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 4.4 - Evitando Cobranças Acidentais | Claude Code Open</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+
+    pre { overflow-x: auto; }
+    code { font-family: 'Fira Code', 'Courier New', monospace; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🤖</span>
+            <span class="font-bold text-lg hidden sm:inline">Claude Code Open</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Instalação</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Ollama</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10">
+            <span class="sm:hidden">T4</span><span class="hidden sm:inline">OpenRouter</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span><span class="hidden sm:inline">Na Prática</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-amber-400">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-amber-400">Trilha 4</a>
+      <span>/</span>
+      <span class="text-amber-400">Módulo 4.4</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MÓDULO 4.4</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">⚠️ Evitando Cobranças Acidentais</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Entenda como cobranças acontecem, como o modelo Haiku opera em background e como se proteger completamente com um checklist de segurança.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Tópicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">25</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Básico</div>
+          <div class="text-xs text-neutral-400">Nível</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-amber-400">Prático</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ALERTA PRINCIPAL -->
+    <div class="bg-red-900/30 rounded-xl border-2 border-red-500/50 p-6 mb-12">
+      <h2 class="text-xl font-bold text-red-400 mb-3 flex items-center">
+        <span class="mr-2">🚨</span> Alerta Importante
+      </h2>
+      <p class="text-neutral-300 text-lg">Se você não configurar <strong class="text-red-400">TODOS os modelos</strong>, pode ser cobrado sem perceber. Claude Code faz chamadas em background que você não vê diretamente nas respostas — e essas chamadas podem ir para modelos pagos.</p>
+    </div>
+
+    <!-- SECAO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">💸 Como Cobranças Acontecem</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O mecanismo de cobrança é simples: <strong class="text-amber-400">qualquer chamada a um modelo sem :free é cobrada</strong>. O problema não é usar o OpenRouter em si — é deixar algum slot de modelo não configurado.
+      </p>
+
+      <!-- Diagrama simplificado -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="font-semibold text-amber-400 mb-4">🔄 Fluxo de Chamadas do Claude Code</h3>
+        <div class="space-y-3">
+          <div class="flex items-center space-x-3">
+            <div class="w-32 shrink-0 bg-amber-500/20 rounded-lg p-2 text-center text-xs text-amber-400 font-semibold">Você digita algo</div>
+            <div class="text-neutral-500">→</div>
+            <div class="bg-dark-700 rounded-lg p-2 text-xs text-neutral-300 flex-1">Claude Code processa o pedido</div>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div class="w-32 shrink-0 bg-amber-500/20 rounded-lg p-2 text-center text-xs text-amber-400 font-semibold">ANTHROPIC_MODEL</div>
+            <div class="text-neutral-500">→</div>
+            <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-2 text-xs text-emerald-400 flex-1">Resposta principal — configurado = grátis</div>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div class="w-32 shrink-0 bg-red-500/20 rounded-lg p-2 text-center text-xs text-red-400 font-semibold">HAIKU (background)</div>
+            <div class="text-neutral-500">→</div>
+            <div class="bg-red-900/20 border border-red-500/30 rounded-lg p-2 text-xs text-red-400 flex-1">Tarefas internas — se não configurado = PAGO</div>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div class="w-32 shrink-0 bg-red-500/20 rounded-lg p-2 text-center text-xs text-red-400 font-semibold">SUBAGENT (background)</div>
+            <div class="text-neutral-500">→</div>
+            <div class="bg-red-900/20 border border-red-500/30 rounded-lg p-2 text-xs text-red-400 flex-1">Subagentes paralelos — se não configurado = PAGO</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">💸</span> Cenário Típico de Cobrança
+        </h3>
+        <p class="text-neutral-300 mb-3">Desenvolvedor configura apenas ANTHROPIC_MODEL e inicia sessão. Para cada mensagem sua, Claude Code faz internamente:</p>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">1</span><span>1 chamada ao modelo principal (configurado como :free) — $0</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400 mt-1">2</span><span>2-3 chamadas ao Haiku (não configurado) — cobrado por token</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400 mt-1">3</span><span>Acúmulo invisível de cobranças ao longo da sessão</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SECAO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">🤖 O Modelo Haiku em Background</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Claude Code foi projetado pela Anthropic para usar <strong class="text-amber-400">Claude Haiku</strong> (o modelo mais rápido e barato) para tarefas internas. Quando você redireciona para o OpenRouter, esse comportamento persiste.
+      </p>
+
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center">
+          <span class="mr-2">🤖</span> O que o Haiku faz em background
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1 text-lg">•</span>
+            <div><strong>Análise de contexto</strong> — decide quais arquivos são relevantes para sua pergunta</div>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1 text-lg">•</span>
+            <div><strong>Sumários internos</strong> — condensa partes do contexto para caber na janela</div>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1 text-lg">•</span>
+            <div><strong>Verificação de resultados</strong> — valida se as ações foram executadas corretamente</div>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1 text-lg">•</span>
+            <div><strong>Planejamento de subagentes</strong> — quando opera em modo agente paralelo</div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> A Solução
+        </h3>
+        <p class="text-neutral-300 mb-3">Configure <strong>ANTHROPIC_DEFAULT_HAIKU_MODEL</strong> com o mesmo modelo :free dos demais slots. O Claude Code vai usar seu modelo gratuito onde normalmente usaria o Haiku pago.</p>
+        <pre class="bg-dark-900 rounded-lg p-3 text-sm mt-3"><code class="text-neutral-300"><span class="text-neutral-500"># No settings.json ou como variável de ambiente</span>
+<span class="text-amber-400">"ANTHROPIC_DEFAULT_HAIKU_MODEL"</span>: <span class="text-emerald-400">"qwen/qwen3-coder:free"</span></code></pre>
+      </div>
+    </section>
+
+    <!-- SECAO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">🔇 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Além de configurar os slots de modelo, existe uma variável que desativa chamadas de API que não são essenciais para a tarefa em si. Isso <strong class="text-amber-400">economiza requisições diárias</strong> e elimina uma classe de possíveis cobranças.
+      </p>
+
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">O que essa variável desativa:</h3>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span>Telemetria e analytics enviados para a Anthropic</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span>Verificações de contexto opcionais em background</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span>Análises proativas que não foram explicitamente pedidas</span></li>
+          <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span>Chamadas de heartbeat e status</span></li>
+        </ul>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="font-semibold text-amber-400 mb-4">Como configurar:</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm"><code class="text-neutral-300"><span class="text-neutral-500"># Opção 1: variável de ambiente (temporário)</span>
+<span class="text-amber-400">export</span> CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=<span class="text-emerald-400">1</span>
+
+<span class="text-neutral-500"># Opção 2: settings.json (permanente - recomendado)</span>
+{
+  <span class="text-amber-400">"env"</span>: {
+    <span class="text-amber-400">"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC"</span>: <span class="text-emerald-400">"1"</span>
+  }
+}</code></pre>
+      </div>
+    </section>
+
+    <!-- SECAO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">🚫 DISABLE_PROMPT_CACHING</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Claude Code envia <strong class="text-amber-400">headers de beta</strong> para ativar o prompt caching da Anthropic. O OpenRouter não reconhece esses headers e retorna <strong class="text-red-400">erro 400</strong>. A variável DISABLE_PROMPT_CACHING elimina esse problema.
+      </p>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">🐛</span> Sintoma do Problema
+        </h3>
+        <p class="text-neutral-300 mb-3">Se você ver erros como estes ao usar Claude Code com OpenRouter, é o problema dos headers beta:</p>
+        <pre class="bg-dark-900 rounded-lg p-3 text-sm"><code class="text-red-400">Error: 400 Bad Request
+anthropic-beta header not supported
+Prompt caching not available for this model</code></pre>
+      </div>
+
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">A Solução:</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm"><code class="text-neutral-300"><span class="text-neutral-500"># Opção 1: variável de ambiente</span>
+<span class="text-amber-400">export</span> DISABLE_PROMPT_CACHING=<span class="text-emerald-400">1</span>
+
+<span class="text-neutral-500"># Opção 2: settings.json (recomendado)</span>
+{
+  <span class="text-amber-400">"env"</span>: {
+    <span class="text-amber-400">"DISABLE_PROMPT_CACHING"</span>: <span class="text-emerald-400">"1"</span>,
+    <span class="text-amber-400">"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC"</span>: <span class="text-emerald-400">"1"</span>
+  }
+}</code></pre>
+      </div>
+    </section>
+
+    <!-- SECAO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">📊 Verificando no Dashboard</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O dashboard de atividade do OpenRouter é a <strong class="text-amber-400">fonte de verdade</strong>. Após cada sessão de trabalho, verifique que todas as chamadas foram para modelos :free com custo $0.
+      </p>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <span class="text-amber-400 font-bold">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Acesse a página de atividade</h4>
+            <p class="text-neutral-300 text-sm">Vá para <strong class="text-amber-400">https://openrouter.ai/activity</strong>. A página mostra todas as chamadas recentes com modelo, tokens e custo.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <span class="text-amber-400 font-bold">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Verifique os modelos utilizados</h4>
+            <p class="text-neutral-300 text-sm">Cada linha deve mostrar o modelo com sufixo <strong>:free</strong>. Se aparecer um modelo sem :free, identifique qual variável não está configurada.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <span class="text-amber-400 font-bold">3</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Confirme custo total $0</h4>
+            <p class="text-neutral-300 text-sm">O custo total da sessão deve ser <strong class="text-emerald-400">$0.00</strong>. Qualquer valor &gt;$0 indica modelo pago sendo usado.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <span class="text-amber-400 font-bold">4</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Use os filtros se necessário</h4>
+            <p class="text-neutral-300 text-sm">O dashboard permite filtrar por data e modelo. Se tiver muitas entradas, filtre pelo horário da sua sessão de trabalho.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECAO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">🔄 Versão Específica do Claude Code</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Atualizações do Claude Code podem introduzir mudanças que quebram a compatibilidade com o OpenRouter. Se após atualizar surgirem problemas, fazer <strong class="text-amber-400">downgrade para uma versão estável</strong> é a solução mais rápida.
+      </p>
+
+      <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-amber-400 mb-4">Como trocar a versão:</h3>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm"><code class="text-neutral-300"><span class="text-neutral-500"># Verificar versão atual</span>
+claude --version
+
+<span class="text-neutral-500"># Instalar versão específica estável</span>
+npm install -g @anthropic-ai/claude-code@<span class="text-amber-400">2.1.68</span>
+
+<span class="text-neutral-500"># Verificar se a instalação foi aplicada</span>
+claude --version</code></pre>
+      </div>
+
+      <!-- Checklist de segurança -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Checklist de Segurança Completo
+        </h3>
+        <p class="text-neutral-300 mb-4 text-sm">Marque cada item antes de começar uma sessão de trabalho:</p>
+        <div class="space-y-3">
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-dark-600 bg-dark-700">
+            <span class="text-neutral-300 text-sm">ANTHROPIC_BASE_URL configurado para https://openrouter.ai/api</span>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-dark-600 bg-dark-700">
+            <span class="text-neutral-300 text-sm">ANTHROPIC_AUTH_TOKEN configurado com chave sk-or-...</span>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-dark-600 bg-dark-700">
+            <span class="text-neutral-300 text-sm">ANTHROPIC_MODEL apontando para modelo :free</span>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-dark-600 bg-dark-700">
+            <span class="text-neutral-300 text-sm">ANTHROPIC_DEFAULT_HAIKU_MODEL apontando para modelo :free</span>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-dark-600 bg-dark-700">
+            <span class="text-neutral-300 text-sm">ANTHROPIC_DEFAULT_SONNET_MODEL apontando para modelo :free</span>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-dark-600 bg-dark-700">
+            <span class="text-neutral-300 text-sm">ANTHROPIC_DEFAULT_OPUS_MODEL apontando para modelo :free</span>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-dark-600 bg-dark-700">
+            <span class="text-neutral-300 text-sm">ANTHROPIC_SMALL_FAST_MODEL apontando para modelo :free</span>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-dark-600 bg-dark-700">
+            <span class="text-neutral-300 text-sm">CLAUDE_CODE_SUBAGENT_MODEL apontando para modelo :free</span>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-dark-600 bg-dark-700">
+            <span class="text-neutral-300 text-sm">CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1</span>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-dark-600 bg-dark-700">
+            <span class="text-neutral-300 text-sm">Dashboard verificado após primeira sessão: custo = $0</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Solução Completa em Um Arquivo
+        </h3>
+        <p class="text-neutral-300 mb-3">O settings.json abaixo inclui todas as proteções necessárias:</p>
+        <pre class="bg-dark-900 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">{
+  <span class="text-amber-400">"env"</span>: {
+    <span class="text-amber-400">"ANTHROPIC_BASE_URL"</span>: <span class="text-emerald-400">"https://openrouter.ai/api"</span>,
+    <span class="text-amber-400">"ANTHROPIC_AUTH_TOKEN"</span>: <span class="text-emerald-400">"sk-or-sua-chave-aqui"</span>,
+    <span class="text-amber-400">"ANTHROPIC_API_KEY"</span>: <span class="text-emerald-400">""</span>,
+    <span class="text-amber-400">"ANTHROPIC_MODEL"</span>: <span class="text-emerald-400">"qwen/qwen3-coder:free"</span>,
+    <span class="text-amber-400">"ANTHROPIC_DEFAULT_SONNET_MODEL"</span>: <span class="text-emerald-400">"qwen/qwen3-coder:free"</span>,
+    <span class="text-amber-400">"ANTHROPIC_DEFAULT_OPUS_MODEL"</span>: <span class="text-emerald-400">"qwen/qwen3-coder:free"</span>,
+    <span class="text-amber-400">"ANTHROPIC_DEFAULT_HAIKU_MODEL"</span>: <span class="text-emerald-400">"qwen/qwen3-coder:free"</span>,
+    <span class="text-amber-400">"ANTHROPIC_SMALL_FAST_MODEL"</span>: <span class="text-emerald-400">"qwen/qwen3-coder:free"</span>,
+    <span class="text-amber-400">"CLAUDE_CODE_SUBAGENT_MODEL"</span>: <span class="text-emerald-400">"qwen/qwen3-coder:free"</span>,
+    <span class="text-amber-400">"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC"</span>: <span class="text-emerald-400">"1"</span>,
+    <span class="text-amber-400">"DISABLE_PROMPT_CACHING"</span>: <span class="text-emerald-400">"1"</span>
+  }
+}</code></pre>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">✅</span> Resumo do Módulo 4.4
+        </h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">Cobranças acontecem</strong><span class="text-neutral-400"> — qualquer modelo sem :free é cobrado, incluindo os de background</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">Haiku em background</strong><span class="text-neutral-400"> — configure ANTHROPIC_DEFAULT_HAIKU_MODEL para evitar cobranças ocultas</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">DISABLE_NONESSENTIAL_TRAFFIC</strong><span class="text-neutral-400"> — economiza requisições e elimina tráfego desnecessário</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">DISABLE_PROMPT_CACHING</strong><span class="text-neutral-400"> — resolve erros 400 de headers beta incompatíveis com OpenRouter</span></div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-1">✓</span>
+            <div><strong class="text-white">Verificação no dashboard</strong><span class="text-neutral-400"> — confirmar custo $0 após cada sessão em openrouter.ai/activity</span></div>
+          </div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-amber-400 mb-2">Trilha Completa!</h3>
+          <p class="text-neutral-300">Você concluiu a Trilha 4. Continue para a Trilha 5 para aprender a usar Claude Code na prática em projetos reais.</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-4-3.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Módulo 4.3
+          </a>
+          <a href="../trilha5/index.html" class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors">
+            Trilha 5: Na Prática →
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Claude Code Open - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

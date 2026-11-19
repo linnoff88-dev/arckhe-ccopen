@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 5.1 — Primeiros Comandos | Claude Code Open</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - cores de acento (trilha teal) */
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13, 148, 136, 0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13, 148, 136, 0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13, 148, 136, 0.18); }
+    html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
+    html:not(.dark) .hover\:bg-teal-500\/10:hover { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .bg-teal-900\/30 { background-color: rgba(13, 148, 136, 0.08); }
+
+    /* Light mode - remove gradientes (fundo uniforme) */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+
+    /* Light mode - cores especiais */
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Code blocks */
+    pre { overflow-x: auto; }
+    code { font-family: 'Courier New', Courier, monospace; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🤖</span>
+            <span class="font-bold text-lg hidden sm:inline">Claude Code Open</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Instalação</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Ollama Local</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span><span class="hidden sm:inline">OpenRouter</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span><span class="hidden sm:inline">Na Prática</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="border-b border-dark-600">
+    <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center space-x-2 text-sm text-neutral-400">
+        <a href="../../index.html" class="hover:text-teal-400 transition-colors">Início</a>
+        <span>/</span>
+        <a href="index.html" class="hover:text-teal-400 transition-colors">Trilha 5 — Na Prática</a>
+        <span>/</span>
+        <span class="text-teal-400">Módulo 5.1</span>
+      </div>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">
+        MÓDULO 5.1
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🎮 Primeiros Comandos</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Do zero ao primeiro projeto: como iniciar Claude Code, navegar e executar suas primeiras tarefas reais com confiança.</p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Tópicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Inter.</div>
+          <div class="text-xs text-neutral-400">Nível</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Prático</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- SEÇÃO 1: Iniciando Claude Code -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">🚀 Iniciando Claude Code</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O <strong class="text-teal-400">Claude Code</strong> inicia sempre no diretório atual. O primeiro passo é sempre navegar até o seu projeto antes de chamar o comando <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">claude</code>. Isso garante que ele carregue o contexto correto do projeto.
+      </p>
+
+      <!-- Box Conceito -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">💡</span> Como o Claude Code inicia
+        </h3>
+        <p class="text-neutral-300 mb-4">Ao executar <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">claude</code>, ele lê o diretório atual, carrega os arquivos CLAUDE.md disponíveis e inicia a sessão interativa. Você pode passar um arquivo como argumento para já abrir com contexto.</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-teal-400">Sem argumento:</strong> inicia no diretório atual</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-teal-400">Com arquivo:</strong> abre com o arquivo já carregado no contexto</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-teal-400">Non-interactive (-p):</strong> executa um prompt e retorna, ideal para scripts</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-700 rounded-lg p-4 mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs text-neutral-500 font-mono">bash</span>
+          <span class="text-xs text-teal-400">Formas de iniciar</span>
+        </div>
+        <pre class="text-sm text-neutral-300"><code><span class="text-neutral-500"># Iniciar no projeto atual</span>
+cd ~/meu-projeto
+claude
+
+<span class="text-neutral-500"># Iniciar e já abrir um arquivo específico</span>
+claude app.py
+
+<span class="text-neutral-500"># Iniciar com múltiplos arquivos no contexto</span>
+claude app.py utils.py config.json
+
+<span class="text-neutral-500"># Modo non-interactive (script/automação)</span>
+claude -p "explique este código" &lt; arquivo.py
+
+<span class="text-neutral-500"># Modo non-interactive com arquivo de saída</span>
+claude -p "adicione docstrings" arquivo.py &gt; arquivo_documentado.py</code></pre>
+      </div>
+
+      <!-- Timeline -->
+      <div class="space-y-4 mb-6">
+        <h3 class="text-lg font-semibold text-neutral-300">Fluxo de inicialização</h3>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center">
+            <span class="text-teal-400 font-bold text-sm">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-4 border border-dark-600">
+            <h4 class="font-semibold text-white mb-1">cd para o projeto</h4>
+            <p class="text-sm text-neutral-400">Navegue até o diretório raiz do seu projeto para que o CC encontre os arquivos CLAUDE.md corretos.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center">
+            <span class="text-teal-400 font-bold text-sm">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-4 border border-dark-600">
+            <h4 class="font-semibold text-white mb-1">Executar claude</h4>
+            <p class="text-sm text-neutral-400">O CC carrega o ambiente, lê os CLAUDE.md e exibe o prompt de entrada aguardando sua primeira instrução.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center">
+            <span class="text-teal-400 font-bold text-sm">3</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-4 border border-dark-600">
+            <h4 class="font-semibold text-white mb-1">Aguardar carregamento</h4>
+            <p class="text-sm text-neutral-400">O CC inicializa os tools, verifica permissões e carrega configurações do settings.json antes de estar pronto.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center">
+            <span class="text-teal-400 font-bold text-sm">4</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-4 border border-dark-600">
+            <h4 class="font-semibold text-white mb-1">Primeira mensagem</h4>
+            <p class="text-sm text-neutral-400">Você vê o prompt <code class="bg-dark-700 px-1 rounded text-xs">&gt;</code> — CC está pronto. Pode começar com "O que existe neste projeto?" para um overview rápido.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 2: Como dar instruções -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">💬 Como dar instruções</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A diferença entre um resultado medíocre e um resultado excelente está na <strong class="text-teal-400">qualidade da instrução</strong>. Claude Code é poderoso, mas precisa de contexto suficiente para trabalhar com precisão. Instruções vagas geram resultados genéricos.
+      </p>
+
+      <!-- Grid Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400 mt-0.5 flex-shrink-0">✓</span>
+              <span><strong>"Crie uma função Python que valida email com regex, retorna bool, com testes pytest cobrindo emails válidos e inválidos"</strong></span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400 mt-0.5 flex-shrink-0">✓</span>
+              <span><strong>"Refatore a função process_data em utils.py para usar list comprehension em vez de loop for"</strong></span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400 mt-0.5 flex-shrink-0">✓</span>
+              <span><strong>"Adicione tratamento de erro para FileNotFoundError na função load_config, logando o erro antes de relançar"</strong></span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NÃO fazer</h4>
+          <ul class="space-y-3 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400 mt-0.5 flex-shrink-0">✗</span>
+              <span>"Faz um código aí" — sem contexto, linguagem ou objetivo</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400 mt-0.5 flex-shrink-0">✗</span>
+              <span>"Melhore este código" — o que é "melhorar"? Performance? Legibilidade? Segurança?</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400 mt-0.5 flex-shrink-0">✗</span>
+              <span>"Corrija o bug" — sem colar o erro, o trecho de código ou descrever o comportamento esperado</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Box Dica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Fórmula de instrução eficaz
+        </h3>
+        <p class="text-neutral-300 mb-3">Use este template mental para toda instrução:</p>
+        <div class="bg-dark-700 rounded-lg p-4">
+          <p class="text-sm text-neutral-300"><span class="text-teal-400 font-semibold">[Ação]</span> + <span class="text-teal-400 font-semibold">[O quê]</span> + <span class="text-teal-400 font-semibold">[Onde]</span> + <span class="text-teal-400 font-semibold">[Restrições]</span> + <span class="text-teal-400 font-semibold">[Resultado esperado]</span></p>
+          <p class="text-sm text-neutral-400 mt-2">Exemplo: "Crie [ação] uma função [o quê] de validação de CPF [onde: no arquivo validators.py] usando regex [restrição] que retorne True/False e lance ValueError se o input não for string [resultado]"</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 3: Comandos slash -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">⚡ Comandos Slash Essenciais</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Os <strong class="text-teal-400">comandos slash</strong> são atalhos que controlam o comportamento do Claude Code durante a sessão. Dominá-los aumenta drasticamente a produtividade — especialmente <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">/compact</code> e <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">/model</code>.
+      </p>
+
+      <!-- Tabela -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden mb-6">
+        <div class="p-4 border-b border-dark-600">
+          <h3 class="font-semibold text-neutral-300">Referência completa de comandos</h3>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-dark-600 bg-dark-700/50">
+                <th class="px-6 py-3 text-left text-xs font-semibold text-teal-400 uppercase tracking-wider">Comando</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-teal-400 uppercase tracking-wider">O que faz</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-teal-400 uppercase tracking-wider">Quando usar</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-dark-600">
+              <tr class="hover:bg-dark-700/30">
+                <td class="px-6 py-4"><code class="text-teal-400 font-mono text-sm">/help</code></td>
+                <td class="px-6 py-4 text-neutral-300 text-sm">Lista todos os comandos disponíveis</td>
+                <td class="px-6 py-4 text-neutral-400 text-sm">Quando esquecer algum comando</td>
+              </tr>
+              <tr class="hover:bg-dark-700/30">
+                <td class="px-6 py-4"><code class="text-teal-400 font-mono text-sm">/compact</code></td>
+                <td class="px-6 py-4 text-neutral-300 text-sm">Comprime o histórico mantendo pontos-chave</td>
+                <td class="px-6 py-4 text-neutral-400 text-sm">A cada ~10-15 mensagens em sessões longas</td>
+              </tr>
+              <tr class="hover:bg-dark-700/30">
+                <td class="px-6 py-4"><code class="text-teal-400 font-mono text-sm">/clear</code></td>
+                <td class="px-6 py-4 text-neutral-300 text-sm">Limpa toda a conversa (novo início)</td>
+                <td class="px-6 py-4 text-neutral-400 text-sm">Mudança de tarefa completamente diferente</td>
+              </tr>
+              <tr class="hover:bg-dark-700/30">
+                <td class="px-6 py-4"><code class="text-teal-400 font-mono text-sm">/config</code></td>
+                <td class="px-6 py-4 text-neutral-300 text-sm">Abre o menu de configurações</td>
+                <td class="px-6 py-4 text-neutral-400 text-sm">Ajustar permissões, modelo, preferências</td>
+              </tr>
+              <tr class="hover:bg-dark-700/30">
+                <td class="px-6 py-4"><code class="text-teal-400 font-mono text-sm">/exit</code></td>
+                <td class="px-6 py-4 text-neutral-300 text-sm">Sai do Claude Code</td>
+                <td class="px-6 py-4 text-neutral-400 text-sm">Encerrar a sessão corretamente</td>
+              </tr>
+              <tr class="hover:bg-dark-700/30">
+                <td class="px-6 py-4"><code class="text-teal-400 font-mono text-sm">/model</code></td>
+                <td class="px-6 py-4 text-neutral-300 text-sm">Troca o modelo de linguagem</td>
+                <td class="px-6 py-4 text-neutral-400 text-sm">Alternar entre Opus/Sonnet/Haiku ou Ollama</td>
+              </tr>
+              <tr class="hover:bg-dark-700/30">
+                <td class="px-6 py-4"><code class="text-teal-400 font-mono text-sm">/add-dir</code></td>
+                <td class="px-6 py-4 text-neutral-300 text-sm">Adiciona diretório ao contexto da sessão</td>
+                <td class="px-6 py-4 text-neutral-400 text-sm">Trabalhar com pastas fora do diretório atual</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Box Dica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">⚡</span> Atalho de teclado
+        </h3>
+        <p class="text-neutral-300">Pressione <kbd class="bg-dark-700 border border-dark-600 px-2 py-1 rounded text-sm font-mono">/</kbd> seguido de Tab para autocompletar comandos. O CC mostra sugestões conforme você digita — você não precisa memorizar todos os comandos.</p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 4: Modo de permissão -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">🔒 Modo de Permissão</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O Claude Code tem um <strong class="text-teal-400">sistema de permissões</strong> que controla quais ações ele pode executar automaticamente. O modo padrão é conservador — ideal para uso cotidiano. O modo sem permissões é para automações controladas.
+      </p>
+
+      <!-- Box Alerta -->
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> --dangerously-skip-permissions
+        </h3>
+        <p class="text-neutral-300 mb-3">Esta flag <strong class="text-red-400">desativa todas as confirmações</strong>. O CC executa comandos de terminal, escreve arquivos e faz mudanças sem pedir aprovação. Consequências:</p>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400">•</span>
+            <span>Comandos destrutivos (<code class="bg-dark-700 px-1 rounded">rm -rf</code>, sobrescrita de arquivos) executam sem aviso</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400">•</span>
+            <span>Ideal apenas em <strong>containers isolados</strong> ou pipelines CI/CD controlados</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400">•</span>
+            <span>Nunca use em máquinas de produção ou com dados sensíveis</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Box Dica -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-3 flex items-center">
+          <span class="mr-2">🛡️</span> Modo padrão — o mais seguro
+        </h3>
+        <p class="text-neutral-300 mb-3">No modo padrão, o CC solicita aprovação antes de executar qualquer comando de terminal. Você vê exatamente o que ele quer fazer e pode aprovar, rejeitar ou editar.</p>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-0.5">✓</span>
+            <span>Aprovação explícita para cada execução de comando</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-0.5">✓</span>
+            <span>Você mantém controle total sobre o que acontece no sistema</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-0.5">✓</span>
+            <span>Pode usar allowlists no settings.json para comandos confiáveis específicos</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-700 rounded-lg p-4">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs text-neutral-500 font-mono">bash</span>
+          <span class="text-xs text-teal-400">Exemplos de uso</span>
+        </div>
+        <pre class="text-sm text-neutral-300"><code><span class="text-neutral-500"># Modo padrão (recomendado) - pede confirmação</span>
+claude
+
+<span class="text-neutral-500"># Skip de permissões - APENAS em ambientes controlados</span>
+claude --dangerously-skip-permissions
+
+<span class="text-neutral-500"># Non-interactive + skip - para pipelines CI/CD</span>
+claude -p "rode os testes e corrija falhas" --dangerously-skip-permissions</code></pre>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 5: Trabalhando com arquivos -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">📂 Trabalhando com Arquivos</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Claude Code pode <strong class="text-teal-400">ler, editar e criar arquivos</strong> diretamente no seu sistema de arquivos usando linguagem natural. Você não precisa copiar conteúdo para o terminal — basta descrever o que quer.
+      </p>
+
+      <!-- Box com exemplos -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">📋</span> Exemplos reais de pedidos
+        </h3>
+        <div class="space-y-3">
+          <div class="bg-dark-700 rounded-lg p-3">
+            <p class="text-sm text-teal-400 font-mono mb-1">&gt; Leia o arquivo app.py e explique o que ele faz</p>
+            <p class="text-xs text-neutral-400">CC lê o arquivo e retorna um resumo claro da estrutura e função de cada parte</p>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-3">
+            <p class="text-sm text-teal-400 font-mono mb-1">&gt; Edite o arquivo config.json e adicione a chave "debug": true</p>
+            <p class="text-xs text-neutral-400">CC lê, modifica e salva o arquivo — pedindo confirmação no modo padrão</p>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-3">
+            <p class="text-sm text-teal-400 font-mono mb-1">&gt; Crie um novo arquivo utils.py com funções auxiliares para validação</p>
+            <p class="text-xs text-neutral-400">CC cria o arquivo do zero com o conteúdo especificado</p>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-3">
+            <p class="text-sm text-teal-400 font-mono mb-1">&gt; Liste todos os arquivos .py neste projeto e me diga quais têm mais de 100 linhas</p>
+            <p class="text-xs text-neutral-400">CC usa ferramentas de busca para encontrar e analisar arquivos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Box Dica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica: mencione o caminho do arquivo
+        </h3>
+        <p class="text-neutral-300">Sempre que possível, mencione o caminho relativo do arquivo no pedido. <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">"Edite src/models/user.py"</code> é mais preciso que <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">"edite o modelo de usuário"</code> — especialmente em projetos com muitos arquivos.</p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 6: Git com Claude Code -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">🌿 Usando Git com Claude Code</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Claude Code pode executar qualquer operação git em linguagem natural. A grande vantagem é que ele entende o que mudou no código e escreve <strong class="text-teal-400">mensagens de commit mais descritivas</strong> do que a maioria dos desenvolvedores escreveria manualmente.
+      </p>
+
+      <!-- Box com exemplos de git -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🌿</span> Pedidos git que funcionam
+        </h3>
+        <div class="bg-dark-700 rounded-lg p-4">
+          <pre class="text-sm text-neutral-300"><code><span class="text-neutral-500"># Commit com mensagem automática</span>
+&gt; Faça commit das mudanças com uma mensagem descritiva
+
+<span class="text-neutral-500"># Ver o que mudou</span>
+&gt; Mostre o diff do que mudou desde o último commit
+
+<span class="text-neutral-500"># Criar branch</span>
+&gt; Crie uma nova branch chamada feature/autenticacao
+
+<span class="text-neutral-500"># Resolver conflitos</span>
+&gt; Resolva os conflitos de merge no arquivo models/user.py
+
+<span class="text-neutral-500"># Histórico resumido</span>
+&gt; Mostre os últimos 5 commits com o que foi alterado em cada um
+
+<span class="text-neutral-500"># Reverter mudança</span>
+&gt; Reverta as mudanças no arquivo config.py sem criar commit</code></pre>
+        </div>
+      </div>
+
+      <!-- Box Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Por que CC escreve commits melhores
+        </h3>
+        <ul class="space-y-2 text-neutral-300 text-sm">
+          <li><strong class="text-blue-400">Analisa o diff completo</strong> — não só o nome do arquivo, mas o que realmente mudou</li>
+          <li><strong class="text-blue-400">Segue convenções</strong> — se o CLAUDE.md define Conventional Commits, ele segue sem falhar</li>
+          <li><strong class="text-blue-400">Descreve o porquê</strong> — não apenas "update user.py" mas "fix: corrige validação de email que aceitava domínios sem TLD"</li>
+        </ul>
+      </div>
+
+      <!-- Box Alerta -->
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> Atenção com operações destrutivas
+        </h3>
+        <p class="text-neutral-300 text-sm">Para operações como <code class="bg-dark-700 px-1 rounded text-xs">git reset --hard</code>, <code class="bg-dark-700 px-1 rounded text-xs">git push --force</code> ou rebase, o CC no modo padrão pedirá confirmação explícita. Sempre revise antes de confirmar operações que reescrevem o histórico.</p>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">✅</span> Resumo do Módulo 5.1
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Inicialização correta</strong>
+              <span class="text-neutral-400"> — sempre cd para o projeto antes de chamar claude</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Instruções de qualidade</strong>
+              <span class="text-neutral-400"> — ação + o quê + onde + restrições + resultado esperado</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Slash commands</strong>
+              <span class="text-neutral-400"> — /compact é seu melhor amigo em sessões longas</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Permissões</strong>
+              <span class="text-neutral-400"> — modo padrão para uso cotidiano, skip apenas em ambientes controlados</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Arquivos e git</strong>
+              <span class="text-neutral-400"> — CC faz tudo em linguagem natural, sem copiar e colar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-teal-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">5.2 — 📄 CLAUDE.md: a memória persistente que melhora cada sessão automaticamente</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Voltar para Trilha 5
+          </a>
+          <a href="modulo-5-2.html" class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors">
+            Próximo Módulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Claude Code Open — <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> — 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

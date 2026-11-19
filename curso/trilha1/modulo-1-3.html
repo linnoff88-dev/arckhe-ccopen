@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 1.3 — Conceitos Essenciais | Claude Code Open</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    pre { overflow-x: auto; }
+
+    /* Light mode overrides */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - cores emerald */
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .bg-emerald-900\/40 { background-color: rgba(5, 150, 105, 0.10); }
+
+    /* Light mode - remove gradientes */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+
+    /* Light mode - cores especiais */
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.20); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.20); }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.20); }
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.20); }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Code blocks */
+    .code-block {
+      background-color: #0d1117;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+      line-height: 1.6;
+    }
+    html:not(.dark) .code-block {
+      background-color: #1e293b;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300 transition-colors">
+            <span class="text-2xl">🤖</span>
+            <span class="font-bold text-lg hidden sm:inline">Claude Code Open</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Instalação</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Ollama Local</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">OpenRouter</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Na Prática</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="border-b border-dark-700">
+    <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center space-x-2 text-sm text-neutral-400">
+        <a href="../../index.html" class="hover:text-emerald-400 transition-colors">Início</a>
+        <span>/</span>
+        <a href="index.html" class="hover:text-emerald-400 transition-colors">Trilha 1 — Fundamentos</a>
+        <span>/</span>
+        <span class="text-emerald-400">Módulo 1.3</span>
+      </div>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.3</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">📋 Conceitos Essenciais</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Os termos técnicos que aparecem em todos os outros módulos do curso: tokens, compactação de contexto, API Key, settings.json e variáveis de ambiente em cada sistema operacional.
+      </p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Tópicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">25</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Básico</div>
+          <div class="text-xs text-neutral-400">Nível</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Prático</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- SEÇÃO 1: O que é um Token -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">🔢 O que é um Token</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Token é a <strong class="text-emerald-400">unidade mínima de texto</strong> que um LLM processa. Não é uma letra, não é uma palavra — é algo no meio. Entender tokens é fundamental para entender custo, contexto e performance.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4">Como tokens funcionam na prática</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="text-sm text-neutral-400 mb-2">Texto em inglês — ~1 token por palavra:</div>
+            <div class="font-mono text-sm">
+              <span class="bg-emerald-500/20 text-emerald-400 px-1 rounded mr-1">Hello</span>
+              <span class="bg-blue-500/20 text-blue-400 px-1 rounded mr-1">world</span>
+              <span class="bg-purple-500/20 text-purple-400 px-1 rounded mr-1">!</span>
+              <span class="text-neutral-500 text-xs ml-2">= 3 tokens</span>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="text-sm text-neutral-400 mb-2">Texto em português — ~1.3 tokens por palavra:</div>
+            <div class="font-mono text-sm">
+              <span class="bg-emerald-500/20 text-emerald-400 px-1 rounded mr-1">Ol</span>
+              <span class="bg-blue-500/20 text-blue-400 px-1 rounded mr-1">á</span>
+              <span class="bg-purple-500/20 text-purple-400 px-1 rounded mr-1">mun</span>
+              <span class="bg-amber-500/20 text-amber-400 px-1 rounded mr-1">do</span>
+              <span class="bg-red-500/20 text-red-400 px-1 rounded mr-1">!</span>
+              <span class="text-neutral-500 text-xs ml-2">= 5 tokens</span>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="text-sm text-neutral-400 mb-2">Código — mais tokens por linha:</div>
+            <div class="font-mono text-sm">
+              <span class="bg-emerald-500/20 text-emerald-400 px-1 rounded mr-1">const</span>
+              <span class="bg-blue-500/20 text-blue-400 px-1 rounded mr-1">result</span>
+              <span class="bg-purple-500/20 text-purple-400 px-1 rounded mr-1">=</span>
+              <span class="bg-amber-500/20 text-amber-400 px-1 rounded mr-1">await</span>
+              <span class="bg-red-500/20 text-red-400 px-1 rounded mr-1">fetch</span>
+              <span class="bg-emerald-500/20 text-emerald-400 px-1 rounded mr-1">(</span>
+              <span class="bg-blue-500/20 text-blue-400 px-1 rounded mr-1">url</span>
+              <span class="bg-purple-500/20 text-purple-400 px-1 rounded">)</span>
+              <span class="text-neutral-500 text-xs ml-2">= 8 tokens</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Referência prática de tokens
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-neutral-300 text-sm">
+          <div class="space-y-2">
+            <div class="flex justify-between"><span>1 página de texto</span><span class="text-blue-400">≈ 500 tokens</span></div>
+            <div class="flex justify-between"><span>100 linhas de código</span><span class="text-blue-400">≈ 800 tokens</span></div>
+            <div class="flex justify-between"><span>Arquivo JS médio (200 linhas)</span><span class="text-blue-400">≈ 1.500 tokens</span></div>
+            <div class="flex justify-between"><span>Componente React completo</span><span class="text-blue-400">≈ 2.000 tokens</span></div>
+          </div>
+          <div class="space-y-2">
+            <div class="flex justify-between"><span>Conversa de 10 turnos</span><span class="text-blue-400">≈ 5.000 tokens</span></div>
+            <div class="flex justify-between"><span>Janela 128k (Llama 3.3)</span><span class="text-blue-400">≈ 85 arquivos médios</span></div>
+            <div class="flex justify-between"><span>Janela 200k (Claude)</span><span class="text-blue-400">≈ 133 arquivos médios</span></div>
+            <div class="flex justify-between"><span>Janela 8k (Gemma)</span><span class="text-blue-400">≈ 5 arquivos médios</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Com Ollama/OpenRouter free: custo de tokens = $0
+        </h3>
+        <p class="text-neutral-300">Usando modelos locais ou free tier, você não paga por token. A única "moeda" que importa é o <strong class="text-primary">limite da janela de contexto</strong> — que define quanto o modelo pode "ver" de uma vez.</p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 2: Compactação de contexto -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">🗜️ Compactação de contexto</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Quando a janela de contexto começa a encher, a qualidade das respostas degrada — o modelo "esquece" o início da conversa. A <strong class="text-emerald-400">compactação</strong> resolve isso resumindo o histórico e liberando espaço.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4">Duas formas de compactar</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold mb-3 text-emerald-400">Manual: /compact</h4>
+            <p class="text-neutral-300 text-sm mb-3">Digite no Claude Code quando sentir a sessão pesada ou antes de iniciar uma nova tarefa grande.</p>
+            <div class="code-block text-sm">
+              <span class="text-neutral-500"># No terminal do Claude Code:</span><br>
+              <span class="text-emerald-400">/compact</span><br><br>
+              <span class="text-neutral-500"># Com instrução personalizada:</span><br>
+              <span class="text-emerald-400">/compact</span> <span class="text-yellow-400">Foca nas decisões de arquitetura</span>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold mb-3 text-blue-400">Automático: autoCompactThreshold</h4>
+            <p class="text-neutral-300 text-sm mb-3">Configure no settings.json para compactar automaticamente ao atingir uma porcentagem da janela.</p>
+            <div class="code-block text-sm">
+              <span class="text-neutral-500">// ~/.claude/settings.json</span><br>
+              {<br>
+              &nbsp;&nbsp;<span class="text-yellow-400">"autoCompactThreshold"</span>: <span class="text-blue-400">75</span><br>
+              }<br><br>
+              <span class="text-neutral-500">// Compacta aos 75% da janela</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4">O que acontece durante a compactação</h3>
+        <div class="space-y-3 text-neutral-300 text-sm">
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 font-bold w-4 flex-shrink-0">1.</span>
+            <span>Claude Code pausa a sessão</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 font-bold w-4 flex-shrink-0">2.</span>
+            <span>O modelo gera um resumo do histórico focando em decisões e contexto relevante</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 font-bold w-4 flex-shrink-0">3.</span>
+            <span>O histórico original é substituído pelo resumo compactado</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 font-bold w-4 flex-shrink-0">4.</span>
+            <span>A sessão continua — o modelo mantém o contexto geral mas perde detalhes específicos de mensagens antigas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3">💡 Recomendação prática</h3>
+        <p class="text-neutral-300">Configure <strong class="text-primary">autoCompactThreshold: 75</strong> no settings.json global e esqueça. Para sessões críticas, use /compact manualmente antes de iniciar uma tarefa complexa — assim o modelo começa com o máximo de espaço disponível.</p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 3: API Key e autenticação -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">🗝️ API Key e autenticação</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        API Key é a <strong class="text-emerald-400">senha de acesso ao serviço de modelo</strong>. O Claude Code envia essa chave em cada requisição para provar que você tem permissão de usar a API. Cada serviço tem um formato diferente.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4">API Keys por serviço</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-neutral-400 border-b border-dark-600">
+                <th class="text-left pb-2">Serviço</th>
+                <th class="text-left pb-2">Formato da Key</th>
+                <th class="text-left pb-2">Onde obter</th>
+                <th class="text-left pb-2">Custo</th>
+              </tr>
+            </thead>
+            <tbody class="text-neutral-300">
+              <tr class="border-b border-dark-700">
+                <td class="py-2 font-semibold">Anthropic (oficial)</td>
+                <td class="py-2 font-mono text-xs text-emerald-400">sk-ant-api03-...</td>
+                <td class="py-2">console.anthropic.com</td>
+                <td class="py-2 text-red-400">Pago por token</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-2 font-semibold">OpenRouter</td>
+                <td class="py-2 font-mono text-xs text-blue-400">sk-or-v1-...</td>
+                <td class="py-2">openrouter.ai/keys</td>
+                <td class="py-2 text-emerald-400">Free tier disponível</td>
+              </tr>
+              <tr>
+                <td class="py-2 font-semibold">Ollama (local)</td>
+                <td class="py-2 font-mono text-xs text-purple-400">ollama (qualquer texto)</td>
+                <td class="py-2">Não precisa</td>
+                <td class="py-2 text-emerald-400">Gratuito</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> Segurança: nunca exponha sua API Key
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nunca commitar a API Key no git (nem em arquivo .env)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nunca colocar a key diretamente no CLAUDE.md</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nunca compartilhar a key em screenshots ou vídeos</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Usar variável de ambiente ou settings.json (não versionado)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Adicionar .claude/settings.json ao .gitignore se contiver keys</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 4: settings.json -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">⚙️ settings.json</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O settings.json é o <strong class="text-emerald-400">arquivo de configuração central</strong> do Claude Code. Existe em dois níveis: global (para todos os projetos) e por projeto (sobrescreve o global naquele projeto).
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4">Localização dos arquivos</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="font-semibold text-blue-400 mb-2">Global (todos os projetos)</h4>
+            <div class="code-block text-sm">
+              <span class="text-neutral-500"># Linux / Mac:</span><br>
+              ~/.claude/settings.json<br><br>
+              <span class="text-neutral-500"># Windows:</span><br>
+              %USERPROFILE%\.claude\settings.json
+            </div>
+          </div>
+          <div>
+            <h4 class="font-semibold text-purple-400 mb-2">Por projeto (sobrescreve global)</h4>
+            <div class="code-block text-sm">
+              <span class="text-neutral-500"># Na raiz do projeto:</span><br>
+              .claude/settings.json<br><br>
+              <span class="text-neutral-500"># Adicionar ao .gitignore se tiver keys!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4">settings.json completo para Ollama</h3>
+        <div class="code-block text-sm">
+          {<br>
+          &nbsp;&nbsp;<span class="text-yellow-400">"env"</span>: {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"ANTHROPIC_BASE_URL"</span>: <span class="text-green-400">"http://localhost:11434"</span>,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"ANTHROPIC_AUTH_TOKEN"</span>: <span class="text-green-400">"ollama"</span>,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"ANTHROPIC_API_KEY"</span>: <span class="text-green-400">""</span><br>
+          &nbsp;&nbsp;},<br>
+          &nbsp;&nbsp;<span class="text-yellow-400">"autoCompactThreshold"</span>: <span class="text-blue-400">75</span>,<br>
+          &nbsp;&nbsp;<span class="text-yellow-400">"permissions"</span>: {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"allow"</span>: [<span class="text-green-400">"Bash(npm test)"</span>, <span class="text-green-400">"Bash(git status)"</span>, <span class="text-green-400">"Bash(git diff)"</span>]<br>
+          &nbsp;&nbsp;}<br>
+          }
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4">settings.json completo para OpenRouter</h3>
+        <div class="code-block text-sm">
+          {<br>
+          &nbsp;&nbsp;<span class="text-yellow-400">"env"</span>: {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"ANTHROPIC_BASE_URL"</span>: <span class="text-green-400">"https://openrouter.ai/api/v1"</span>,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"ANTHROPIC_API_KEY"</span>: <span class="text-green-400">"sk-or-v1-sua-chave-aqui"</span><br>
+          &nbsp;&nbsp;},<br>
+          &nbsp;&nbsp;<span class="text-yellow-400">"autoCompactThreshold"</span>: <span class="text-blue-400">75</span><br>
+          }
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3">💡 Hierarquia de configuração</h3>
+        <p class="text-neutral-300 mb-3">A ordem de prioridade, do menor para o maior:</p>
+        <ol class="space-y-1 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-primary font-bold">1.</span><span>Settings global (~/.claude/settings.json) — base padrão</span></li>
+          <li class="flex items-start space-x-2"><span class="text-primary font-bold">2.</span><span>Settings de projeto (.claude/settings.json) — sobrescreve o global</span></li>
+          <li class="flex items-start space-x-2"><span class="text-primary font-bold">3.</span><span>Variáveis de ambiente exportadas no terminal — sobrescreve tudo</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 5: Variáveis de ambiente -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">🌐 Variáveis de ambiente</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Variáveis de ambiente são <strong class="text-emerald-400">pares chave=valor</strong> acessíveis por processos do sistema operacional. É a forma padrão de passar configuração sensível (como chaves de API) para programas sem hardcodar nos arquivos.
+      </p>
+
+      <div class="space-y-4 mb-6">
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-semibold text-emerald-400 mb-3 flex items-center">
+            <span class="mr-2">🐧</span> Linux e macOS
+          </h4>
+          <p class="text-neutral-400 text-sm mb-3">Usando o terminal (bash/zsh):</p>
+          <div class="code-block text-sm">
+            <span class="text-neutral-500"># Apenas para a sessão atual (desaparece quando fechar o terminal):</span><br>
+            <span class="text-emerald-400">export</span> ANTHROPIC_BASE_URL=<span class="text-green-400">"http://localhost:11434"</span><br>
+            <span class="text-emerald-400">export</span> ANTHROPIC_API_KEY=<span class="text-green-400">"ollama"</span><br><br>
+            <span class="text-neutral-500"># Para persistir em todas as sessões (adicionar ao arquivo de perfil):</span><br>
+            <span class="text-emerald-400">echo</span> <span class="text-green-400">'export ANTHROPIC_BASE_URL="http://localhost:11434"'</span> >> ~/.bashrc<br>
+            <span class="text-emerald-400">echo</span> <span class="text-green-400">'export ANTHROPIC_API_KEY="ollama"'</span> >> ~/.bashrc<br>
+            <span class="text-emerald-400">source</span> ~/.bashrc<br><br>
+            <span class="text-neutral-500"># Verificar se foi definida:</span><br>
+            <span class="text-emerald-400">echo</span> $ANTHROPIC_BASE_URL
+          </div>
+          <p class="text-neutral-500 text-xs mt-2">Para zsh: use ~/.zshrc em vez de ~/.bashrc</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-semibold text-blue-400 mb-3 flex items-center">
+            <span class="mr-2">🪟</span> Windows — Prompt de Comando (CMD)
+          </h4>
+          <div class="code-block text-sm">
+            <span class="text-neutral-500">:: Apenas para a sessão atual:</span><br>
+            <span class="text-blue-400">set</span> ANTHROPIC_BASE_URL=http://localhost:11434<br>
+            <span class="text-blue-400">set</span> ANTHROPIC_API_KEY=ollama<br><br>
+            <span class="text-neutral-500">:: Para persistir (permanente no sistema):</span><br>
+            <span class="text-blue-400">setx</span> ANTHROPIC_BASE_URL "http://localhost:11434"<br>
+            <span class="text-blue-400">setx</span> ANTHROPIC_API_KEY "ollama"<br><br>
+            <span class="text-neutral-500">:: Verificar:</span><br>
+            <span class="text-blue-400">echo</span> %ANTHROPIC_BASE_URL%
+          </div>
+          <p class="text-neutral-500 text-xs mt-2">Após setx, feche e reabra o terminal para as variáveis entrarem em vigor.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-semibold text-purple-400 mb-3 flex items-center">
+            <span class="mr-2">💙</span> Windows — PowerShell
+          </h4>
+          <div class="code-block text-sm">
+            <span class="text-neutral-500"># Apenas para a sessão atual:</span><br>
+            <span class="text-purple-400">$env:ANTHROPIC_BASE_URL</span> = <span class="text-green-400">"http://localhost:11434"</span><br>
+            <span class="text-purple-400">$env:ANTHROPIC_API_KEY</span> = <span class="text-green-400">"ollama"</span><br><br>
+            <span class="text-neutral-500"># Para persistir (usando [System.Environment]):</span><br>
+            [<span class="text-blue-400">System.Environment</span>]::SetEnvironmentVariable(<br>
+            &nbsp;&nbsp;<span class="text-green-400">"ANTHROPIC_BASE_URL"</span>,<br>
+            &nbsp;&nbsp;<span class="text-green-400">"http://localhost:11434"</span>,<br>
+            &nbsp;&nbsp;<span class="text-green-400">"User"</span><br>
+            )<br><br>
+            <span class="text-neutral-500"># Verificar:</span><br>
+            <span class="text-purple-400">$env:ANTHROPIC_BASE_URL</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> Lembre-se: export é temporário
+        </h3>
+        <p class="text-neutral-300">O <code class="text-red-400">export</code> sem adicionar ao .bashrc/.zshrc <strong class="text-red-400">dura apenas a sessão atual</strong>. Fechar o terminal = variável some. Por isso, recomendamos usar o settings.json — ele sempre persiste.</p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 6: Sessão vs configuração permanente -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">🔄 Sessão vs configuração permanente</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Este é um dos pontos de maior confusão no início. Há <strong class="text-emerald-400">três formas de configurar</strong> o Claude Code, cada uma com escopo diferente. Saber qual usar evita horas de debug.
+      </p>
+
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-6">Comparativo de métodos de configuração</h3>
+
+        <div class="space-y-4">
+
+          <div class="bg-dark-700/50 rounded-lg p-4 border-l-4 border-red-500">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-red-400">export VAR=valor (sem .bashrc)</h4>
+              <span class="px-2 py-1 bg-red-500/20 text-red-400 text-xs rounded">Temporário</span>
+            </div>
+            <p class="text-neutral-400 text-sm">Dura apenas a sessão do terminal atual. Fechar o terminal = configuração perdida. Útil para testar uma configuração rapidamente.</p>
+            <div class="code-block text-sm mt-2">
+              export ANTHROPIC_BASE_URL="http://localhost:11434"<br>
+              claude  <span class="text-neutral-500"># funciona</span><br>
+              <span class="text-neutral-500"># fechar terminal...</span><br>
+              claude  <span class="text-red-400"># erro: variável não definida</span>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4 border-l-4 border-yellow-500">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-yellow-400">echo 'export...' >> ~/.bashrc</h4>
+              <span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded">Semi-permanente</span>
+            </div>
+            <p class="text-neutral-400 text-sm">Persiste entre sessões, mas depende do shell usado e do sistema. Pode ser sobrescrito por outras ferramentas. Bom para Linux/Mac.</p>
+            <div class="code-block text-sm mt-2">
+              echo 'export ANTHROPIC_BASE_URL="http://localhost:11434"' >> ~/.bashrc<br>
+              source ~/.bashrc<br>
+              <span class="text-neutral-500"># agora funciona mesmo reabrindo o terminal</span>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-4 border-l-4 border-emerald-500">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-emerald-400">settings.json</h4>
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 text-xs rounded">Recomendado</span>
+            </div>
+            <p class="text-neutral-400 text-sm">Persiste sempre. Funciona em todos os sistemas operacionais. Pode ser global ou por projeto. A solução mais confiável e portável.</p>
+            <div class="code-block text-sm mt-2">
+              <span class="text-neutral-500">// ~/.claude/settings.json</span><br>
+              {<br>
+              &nbsp;&nbsp;<span class="text-yellow-400">"env"</span>: {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"ANTHROPIC_BASE_URL"</span>: <span class="text-green-400">"http://localhost:11434"</span>,<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-400">"ANTHROPIC_API_KEY"</span>: <span class="text-green-400">"ollama"</span><br>
+              &nbsp;&nbsp;}<br>
+              }
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3">💡 Recomendação final</h3>
+        <p class="text-neutral-300">Configure tudo no <strong class="text-primary">settings.json global</strong> (~/.claude/settings.json). Funciona em qualquer projeto, em qualquer terminal, sempre. Use export apenas para testar configurações antes de gravar permanentemente.</p>
+      </div>
+
+      <!-- CLAUDE.md básico de referência -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4">📝 CLAUDE.md básico de referência</h3>
+        <p class="text-neutral-400 text-sm mb-4">Para começar qualquer projeto, crie um CLAUDE.md na raiz com pelo menos isso:</p>
+        <div class="code-block text-sm">
+          <span class="text-neutral-500"># CLAUDE.md</span><br><br>
+          <span class="text-emerald-400">## Projeto</span><br>
+          Nome e descrição breve do projeto.<br><br>
+          <span class="text-emerald-400">## Stack</span><br>
+          - [Linguagem e versão]<br>
+          - [Framework principal]<br>
+          - [Banco de dados, se houver]<br><br>
+          <span class="text-emerald-400">## Convenções</span><br>
+          - [Padrão de código: tabs/spaces, aspas, etc.]<br>
+          - [Estilo de nomenclatura: camelCase, snake_case, etc.]<br><br>
+          <span class="text-emerald-400">## Comandos importantes</span><br>
+          - `npm run dev` — inicia o servidor de desenvolvimento<br>
+          - `npm test` — roda os testes<br>
+          - `npm run build` — gera o build de produção<br><br>
+          <span class="text-emerald-400">## Regras</span><br>
+          - Sempre rodar os testes antes de commitar<br>
+          - Nunca modificar arquivos em dist/ diretamente
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">✅</span> Resumo do Módulo 1.3
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Token</strong>
+              <span class="text-neutral-400"> — unidade mínima de texto; 1 palavra ≈ 1.3 tokens em português</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Compactação</strong>
+              <span class="text-neutral-400"> — /compact manual ou autoCompactThreshold: 75 no settings.json</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">API Key</strong>
+              <span class="text-neutral-400"> — senha de acesso; Ollama aceita qualquer texto, OpenRouter usa sk-or-v1-...</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">settings.json</strong>
+              <span class="text-neutral-400"> — global (~/.claude/) ou por projeto (.claude/); projeto sobrescreve global</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Variáveis de ambiente</strong>
+              <span class="text-neutral-400"> — export (Linux/Mac), setx (Windows CMD), $env: (PowerShell)</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">settings.json > export</strong>
+              <span class="text-neutral-400"> — o settings sempre persiste; export some ao fechar o terminal</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Parabéns! Você concluiu a Trilha 1.</h3>
+          <p class="text-neutral-300">Agora você tem a base conceitual completa. A próxima trilha é a instalação prática do Claude Code e configuração do ambiente.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-1-2.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Módulo Anterior
+          </a>
+          <a href="../trilha2/index.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">
+            Próxima Trilha: Instalação →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Claude Code Open — <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> — 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 2.4 — Instalando em VPS | Claude Code Open</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    pre { overflow-x: auto; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🤖</span>
+            <span class="font-bold text-lg hidden sm:inline">Claude Code Open</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Instalação</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Ollama</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span><span class="hidden sm:inline">OpenRouter</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span><span class="hidden sm:inline">Na Prática</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-blue-400">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2 — Instalação</a>
+      <span>/</span>
+      <span class="text-blue-400">Módulo 2.4 — VPS</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">
+        MÓDULO 2.4
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🖥️ Instalando em VPS</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Configure Claude Code em um servidor remoto Ubuntu 22.04. Ideal para automações 24/7, trabalho remoto e pipelines de CI/CD.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">6</div>
+          <div class="text-xs text-neutral-400">Tópicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Intermediário</div>
+          <div class="text-xs text-neutral-400">Nível</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Prático</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span>
+        <h2 class="text-2xl font-bold">☁️ Escolhendo uma VPS</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Uma VPS (Virtual Private Server) permite rodar o Claude Code 24/7 sem depender do seu computador pessoal. Há opções gratuitas e pagas com excelente custo-benefício.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6">
+          <h3 class="text-lg font-semibold text-blue-400 mb-4">🆓 Opções Gratuitas</h3>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-blue-400 mt-1">•</span>
+              <div>
+                <strong class="text-white">Oracle Free Tier</strong>
+                <p class="text-xs text-neutral-400 mt-1">2 VMs gratuitas permanentes (1 vCPU, 1GB RAM cada). A melhor opção gratuita. Registre em cloud.oracle.com</p>
+              </div>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-blue-400 mt-1">•</span>
+              <div>
+                <strong class="text-white">Google Cloud Free Tier</strong>
+                <p class="text-xs text-neutral-400 mt-1">1 VM e2-micro gratuita permanente (us-east1, us-west1, us-central1)</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6">
+          <h3 class="text-lg font-semibold text-blue-400 mb-4">💰 Opções Pagas (custo-benefício)</h3>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-blue-400 mt-1">•</span>
+              <div>
+                <strong class="text-white">Hetzner</strong>
+                <p class="text-xs text-neutral-400 mt-1">~€4/mês — CX11: 1 vCPU, 2GB RAM. Melhor custo-benefício na Europa</p>
+              </div>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-blue-400 mt-1">•</span>
+              <div>
+                <strong class="text-white">DigitalOcean / Linode</strong>
+                <p class="text-xs text-neutral-400 mt-1">~$6/mês — Droplet básico: 1 vCPU, 1GB RAM. Boa documentação</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Configuração mínima recomendada
+        </h3>
+        <p class="text-neutral-300">Para o Claude Code: <strong>1 vCPU, 1GB RAM, 10GB disco</strong>. Ubuntu 22.04 LTS é o sistema operacional recomendado. Evite CentOS 7 (EOL) e Ubuntu 18.04 (Node.js 18+ pode ter problemas).</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span>
+        <h2 class="text-2xl font-bold">🔒 Acessando via SSH</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        SSH (Secure Shell) é o protocolo padrão para acessar servidores Linux remotamente. Configurar <strong class="text-blue-400">chaves SSH</strong> é mais seguro que senhas e elimina a necessidade de digitar senha a cada conexão.
+      </p>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Gerar chave SSH (no seu computador local)</h4>
+            <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># Gerar par de chaves SSH (Linux/Mac)
+ssh-keygen -t ed25519 -C "meu-email@exemplo.com"
+# Pressione Enter para aceitar o caminho padrão
+# Defina uma senha forte (ou Enter para sem senha)
+
+# A chave pública fica em:
+cat ~/.ssh/id_ed25519.pub
+# Copie este conteúdo para a VPS</code></pre>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Conectar ao servidor</h4>
+            <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># Conexão básica via SSH
+ssh usuario@IP_DA_VPS
+
+# Exemplo com root (primeira conexão):
+ssh root@192.168.1.100
+
+# Criar atalho no ~/.ssh/config:
+Host minha-vps
+  HostName 192.168.1.100
+  User ubuntu
+  IdentityFile ~/.ssh/id_ed25519
+
+# Após configurar, conecte assim:
+ssh minha-vps</code></pre>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">3</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Configurações de segurança básicas</h4>
+            <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># No servidor, atualizar sistema
+sudo apt update && sudo apt upgrade -y
+
+# Criar usuário não-root (boa prática)
+sudo adduser meuusuario
+sudo usermod -aG sudo meuusuario
+
+# Copiar chave SSH para novo usuário
+sudo -u meuusuario mkdir /home/meuusuario/.ssh
+sudo cp ~/.ssh/authorized_keys /home/meuusuario/.ssh/
+sudo chown -R meuusuario:meuusuario /home/meuusuario/.ssh</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span>
+        <h2 class="text-2xl font-bold">🟢 Node.js no Servidor Ubuntu</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Em servidores Ubuntu, o nvm é o método ideal. Instala no diretório do usuário sem root, evitando problemas de permissão e isolando o ambiente do sistema.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Setup completo do zero — Ubuntu 22.04</h3>
+        <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># 1. Atualizar sistema
+sudo apt update && sudo apt upgrade -y
+
+# 2. Instalar dependências básicas
+sudo apt install -y curl git build-essential
+
+# 3. Instalar nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+# 4. Carregar nvm na sessão atual
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# 5. Instalar Node.js LTS
+nvm install --lts
+nvm use --lts
+nvm alias default 'lts/*'
+
+# 6. Verificar
+node -v    # v20.x.x
+npm -v     # 10.x.x
+which node # /home/usuario/.nvm/versions/...</code></pre>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span>
+        <h2 class="text-2xl font-bold">⬇️ Instalando Claude Code no Servidor</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Em servidores sem interface gráfica, o Claude Code precisa ser autenticado via API key antes mesmo da primeira execução. Configure as variáveis de ambiente antes de instalar o pacote.
+      </p>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Instalar Claude Code</h4>
+            <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># Instalar Claude Code globalmente
+npm install -g @anthropic-ai/claude-code
+
+# Verificar instalação
+claude --version
+which claude</code></pre>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Configurar variáveis no .bashrc</h4>
+            <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># Abrir .bashrc para edição
+nano ~/.bashrc
+
+# Adicionar ao final:
+export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
+export ANTHROPIC_AUTH_TOKEN="sk-or-v1-SUA-CHAVE"
+
+# Salvar (Ctrl+O, Enter, Ctrl+X) e aplicar:
+source ~/.bashrc
+
+# Verificar
+echo $ANTHROPIC_AUTH_TOKEN</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> Segurança: Nunca exponha a API key
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nunca comite a API key em repositórios git</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Não adicione a chave em arquivos .env sem .gitignore configurado</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Use variáveis de ambiente no sistema (como fizemos)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Considere um secret manager para produção (HashiCorp Vault, AWS Secrets Manager)</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span>
+        <h2 class="text-2xl font-bold">🔑 Autenticação sem Browser</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Servidores Linux não têm interface gráfica. A autenticação via browser OAuth não funciona em ambientes headless. Use <strong class="text-blue-400">API key via variável de ambiente</strong> como único método de autenticação.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Configuração completa de autenticação headless</h3>
+        <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># 1. Gere sua API key em:
+#    console.anthropic.com → API Keys → Create Key
+#    OU em openrouter.ai/keys
+
+# 2. Configure no servidor:
+echo 'export ANTHROPIC_AUTH_TOKEN="sk-ant-SUA-CHAVE"' >> ~/.bashrc
+source ~/.bashrc
+
+# Para OpenRouter (recomendado para modelos gratuitos):
+echo 'export ANTHROPIC_BASE_URL="https://openrouter.ai/api"' >> ~/.bashrc
+echo 'export ANTHROPIC_AUTH_TOKEN="sk-or-v1-SUA-CHAVE"' >> ~/.bashrc
+source ~/.bashrc
+
+# 3. Testar autenticação:
+claude -p "Responda: servidor configurado com sucesso"</code></pre>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">🔍</span> Verificação de autenticação
+        </h3>
+        <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># Verificar variáveis ativas:
+env | grep ANTHROPIC
+
+# Teste completo:
+claude -p "Qual é 1+1?" --no-interactive
+# Deve retornar: 2
+
+# Se falhar com erro de autenticação:
+# 1. Verifique a chave: echo $ANTHROPIC_AUTH_TOKEN
+# 2. Recarregue: source ~/.bashrc
+# 3. Confirme que a chave não expirou no console</code></pre>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span>
+        <h2 class="text-2xl font-bold">📟 Sessões Persistentes com tmux</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O <strong class="text-blue-400">tmux</strong> (terminal multiplexer) mantém sessões ativas no servidor mesmo após você desconectar do SSH. É essencial para sessões longas do Claude Code em servidores.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Guia completo do tmux com Claude Code</h3>
+        <pre class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-green-400"># Instalar tmux (se não tiver)
+sudo apt install -y tmux
+
+# Criar nova sessão chamada "claude"
+tmux new -s claude
+
+# ====== Dentro do tmux ======
+
+# Iniciar Claude Code
+claude
+
+# Para DESANEXAR (sair sem fechar):
+# Pressione: Ctrl+B  depois  D
+# O Claude Code continua rodando!
+
+# ====== De volta ao terminal normal ======
+
+# Listar sessões ativas:
+tmux ls
+# Saída: claude: 1 windows (created ...)
+
+# Reanexar à sessão:
+tmux attach -t claude
+# OU forma curta:
+tmux a -t claude</code></pre>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Comandos essenciais do tmux</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h4 class="text-blue-400 font-medium mb-3 text-sm">Sessões</h4>
+            <ul class="space-y-2 text-sm text-neutral-300">
+              <li><code class="bg-dark-700 px-1.5 py-0.5 rounded">tmux new -s nome</code> — criar sessão</li>
+              <li><code class="bg-dark-700 px-1.5 py-0.5 rounded">tmux ls</code> — listar sessões</li>
+              <li><code class="bg-dark-700 px-1.5 py-0.5 rounded">tmux attach -t nome</code> — reanexar</li>
+              <li><code class="bg-dark-700 px-1.5 py-0.5 rounded">tmux kill-session -t nome</code> — encerrar</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-blue-400 font-medium mb-3 text-sm">Atalhos (Ctrl+B depois...)</h4>
+            <ul class="space-y-2 text-sm text-neutral-300">
+              <li><code class="bg-dark-700 px-1.5 py-0.5 rounded">D</code> — desanexar da sessão</li>
+              <li><code class="bg-dark-700 px-1.5 py-0.5 rounded">%</code> — dividir painel verticalmente</li>
+              <li><code class="bg-dark-700 px-1.5 py-0.5 rounded">"</code> — dividir painel horizontalmente</li>
+              <li><code class="bg-dark-700 px-1.5 py-0.5 rounded">Setas</code> — navegar entre painéis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica: Oracle Free Tier — VPS Gratuita para Sempre
+        </h3>
+        <p class="text-neutral-300 mb-3">A <strong>Oracle Cloud Free Tier</strong> oferece 2 VMs ARM gratuitas <em>permanentemente</em>. Para registrar, acesse <strong class="text-blue-400">cloud.oracle.com</strong> e selecione "Always Free Resources".</p>
+        <ul class="space-y-1 text-sm text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-primary">•</span><span><strong>Ampere A1</strong>: até 4 vCPUs ARM e 24GB RAM no total (gratuito!)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-primary">•</span><span>Ubuntu 22.04 disponível</span></li>
+          <li class="flex items-start space-x-2"><span class="text-primary">•</span><span>Requer cartão de crédito para verificação (não cobra se ficar no free tier)</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">🎯</span> Resumo do Módulo 2.4
+        </h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">VPS escolhida e acessível via SSH</strong>
+              <span class="text-neutral-400"> — com chaves SSH configuradas para segurança</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Node.js instalado via nvm</strong>
+              <span class="text-neutral-400"> — sem sudo, isolado no diretório do usuário</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Claude Code instalado e autenticado</strong>
+              <span class="text-neutral-400"> — via API key no .bashrc, sem necessidade de browser</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">tmux configurado</strong>
+              <span class="text-neutral-400"> — sessões persistentes mesmo após desconexão SSH</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Segurança básica aplicada</strong>
+              <span class="text-neutral-400"> — usuário não-root, chaves SSH, API key protegida</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Trilha Concluída! Próxima Trilha:</h3>
+          <p class="text-neutral-300">Trilha 3 — 🟣 Ollama Local — Configure modelos de IA rodando 100% no seu computador, sem custos de API</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-2-3.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Módulo 2.3: Mac
+          </a>
+          <a href="../trilha3/index.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
+            Trilha 3: Ollama →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Claude Code Open — <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> — 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

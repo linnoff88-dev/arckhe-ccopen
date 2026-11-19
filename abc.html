@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glossário ABC — Claude Code Open</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Light mode - Rose (T6/ABC) */
+    html:not(.dark) .text-rose-400 { color: #9f1239; }
+    html:not(.dark) .bg-rose-500\/20 { background-color: rgba(225, 29, 72, 0.12); }
+    html:not(.dark) .bg-rose-500\/10 { background-color: rgba(225, 29, 72, 0.08); }
+    html:not(.dark) .border-rose-500\/30 { border-color: rgba(225, 29, 72, 0.25); }
+    html:not(.dark) .hover\:bg-rose-500\/10:hover { background-color: rgba(225, 29, 72, 0.08); }
+    html:not(.dark) .hover\:bg-rose-500\/30:hover { background-color: rgba(225, 29, 72, 0.18); }
+    html:not(.dark) .hover\:text-rose-400:hover { color: #9f1239; }
+
+    /* Light mode - Emerald (links de trilha) */
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5, 150, 105, 0.08); }
+
+    /* Light mode - Blue */
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37, 99, 235, 0.08); }
+
+    /* Light mode - Purple */
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+
+    /* Light mode - Amber */
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) .hover\:bg-amber-500\/10:hover { background-color: rgba(217, 119, 6, 0.08); }
+
+    /* Light mode - Teal */
+    html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
+    html:not(.dark) .hover\:bg-teal-500\/10:hover { background-color: rgba(13, 148, 136, 0.08); }
+
+    /* Light mode - remove gradientes */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+
+    /* Light mode - cores especiais */
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+
+    /* Light mode - nav */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+
+    /* Letter anchor scroll offset */
+    .letter-section { scroll-margin-top: 80px; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <!-- Logo + INEMA.CLUB -->
+        <div class="flex items-center space-x-4">
+          <a href="index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🤖</span>
+            <span class="font-bold text-lg hidden sm:inline">Claude Code Open</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+
+        <!-- Trilhas + Theme Toggle -->
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="curso/trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="curso/trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Instalação</span>
+          </a>
+          <a href="curso/trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Ollama</span>
+          </a>
+          <a href="curso/trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">OpenRouter</span>
+          </a>
+          <a href="curso/trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Na Prática</span>
+          </a>
+          <a href="abc.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-rose-400 bg-rose-500/10 transition-colors">
+            <span>ABC</span>
+          </a>
+
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-rose-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-rose-500/20 text-rose-400 text-xs font-semibold rounded-full mb-4">
+        ABC FINAL
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">📖 Glossário ABC do Claude Code</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Todos os termos técnicos que você vai encontrar ao usar o Claude Code com Ollama, OpenRouter e outras integrações. De A a Z, explicados de forma direta e prática.
+      </p>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-3 gap-4 mt-8 max-w-md">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600 text-center">
+          <div class="text-xl font-bold text-rose-400">30+</div>
+          <div class="text-xs text-neutral-400">Termos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600 text-center">
+          <div class="text-xl font-bold text-rose-400">A–Z</div>
+          <div class="text-xs text-neutral-400">Cobertura</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600 text-center">
+          <div class="text-xl font-bold text-rose-400">🤖</div>
+          <div class="text-xs text-neutral-400">Claude Code</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ÍNDICE ALFABÉTICO -->
+  <div class="bg-dark-800 border-b border-dark-600 py-4 sticky top-14 z-40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap gap-2 items-center">
+        <span class="text-xs text-neutral-500 mr-1">Ir para:</span>
+        <a href="#letra-a" class="px-2 py-1 text-xs font-bold rounded bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 transition-colors">A</a>
+        <a href="#letra-b" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">B</a>
+        <a href="#letra-c" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">C</a>
+        <a href="#letra-d" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">D</a>
+        <a href="#letra-e" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">E</a>
+        <a href="#letra-f" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">F</a>
+        <a href="#letra-g" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">G</a>
+        <a href="#letra-h" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">H</a>
+        <a href="#letra-i" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">I</a>
+        <a href="#letra-j" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">J</a>
+        <a href="#letra-l" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">L</a>
+        <a href="#letra-m" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">M</a>
+        <a href="#letra-n" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">N</a>
+        <a href="#letra-o" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">O</a>
+        <a href="#letra-p" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">P</a>
+        <a href="#letra-q" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">Q</a>
+        <a href="#letra-r" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">R</a>
+        <a href="#letra-s" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">S</a>
+        <a href="#letra-t" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">T</a>
+        <a href="#letra-v" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">V</a>
+        <a href="#letra-w" class="px-2 py-1 text-xs font-bold rounded bg-dark-700 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">W</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ==================== LETRA A ==================== -->
+    <section id="letra-a" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">A</span>
+        <h2 class="text-2xl font-bold">Termos com A</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- ANTHROPIC_BASE_URL -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400 font-mono">ANTHROPIC_BASE_URL</h3>
+              <span class="text-xs text-neutral-500">Variável de Ambiente</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Variável de ambiente que define o endereço base da API que o Claude Code vai usar. Por padrão aponta para <code class="bg-dark-700 px-1 rounded text-xs">https://api.anthropic.com</code>, mas você pode redirecionar para <strong class="text-rose-400">Ollama local</strong> (<code class="bg-dark-700 px-1 rounded text-xs">http://localhost:11434/v1</code>) ou qualquer serviço compatível com a API da Anthropic.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Esta variável é o coração da estratégia "motor trocável" — basta mudar seu valor para usar um modelo completamente diferente sem alterar nada no Claude Code.</p>
+        </div>
+
+        <!-- ANTHROPIC_AUTH_TOKEN -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400 font-mono">ANTHROPIC_AUTH_TOKEN</h3>
+              <span class="text-xs text-neutral-500">Variável de Ambiente</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Token de autenticação enviado no header <code class="bg-dark-700 px-1 rounded text-xs">Authorization: Bearer</code> de cada requisição. Quando você usa Ollama localmente, pode definir como qualquer string não-vazia (ex: <code class="bg-dark-700 px-1 rounded text-xs">ollama</code>) pois o servidor local não valida autenticação.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Para OpenRouter, use a API Key real da sua conta. Para a Anthropic nativa, use sua sk-ant-... key.</p>
+        </div>
+
+        <!-- autoCompactThreshold -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400 font-mono">autoCompactThreshold</h3>
+              <span class="text-xs text-neutral-500">settings.json</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Configuração no <code class="bg-dark-700 px-1 rounded text-xs">settings.json</code> que define em que percentual de preenchimento do contexto o Claude Code deve compactar automaticamente o histórico de conversa. Valor entre 0 e 1 (ex: <code class="bg-dark-700 px-1 rounded text-xs">0.7</code> = 70%).
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Modelos locais têm janelas de contexto menores, então configurar um threshold mais baixo evita erros de contexto excedido durante sessões longas.</p>
+        </div>
+
+        <!-- API Key -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">4</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">API Key</h3>
+              <span class="text-xs text-neutral-500">Autenticação</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Chave secreta que identifica sua conta em um serviço de API. Para a Anthropic começa com <code class="bg-dark-700 px-1 rounded text-xs">sk-ant-</code>; para OpenRouter começa com <code class="bg-dark-700 px-1 rounded text-xs">sk-or-</code>. Nunca compartilhe sua API Key nem a inclua em código que vai para o GitHub.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">No contexto do Claude Code com Ollama local, você não precisa de API Key real — um placeholder qualquer funciona.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA B ==================== -->
+    <section id="letra-b" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">B</span>
+        <h2 class="text-2xl font-bold">Termos com B</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- Base URL -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Base URL</h3>
+              <span class="text-xs text-neutral-500">API / Configuração</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            O endereço raiz de um servidor de API. Todas as requisições são feitas adicionando caminhos a esta URL base. Ex: se a Base URL é <code class="bg-dark-700 px-1 rounded text-xs">http://localhost:11434</code>, a rota de chat completa seria <code class="bg-dark-700 px-1 rounded text-xs">http://localhost:11434/v1/messages</code>.
+          </p>
+        </div>
+
+        <!-- Bash tool -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Bash Tool</h3>
+              <span class="text-xs text-neutral-500">Ferramenta Interna</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Uma das ferramentas nativas do Claude Code que permite executar comandos de terminal diretamente. O Claude usa o Bash Tool para rodar <code class="bg-dark-700 px-1 rounded text-xs">npm install</code>, <code class="bg-dark-700 px-1 rounded text-xs">git commit</code>, executar testes e muito mais durante uma sessão.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Você pode restringir quais comandos são permitidos via permissões no <code class="bg-dark-700 px-1 rounded text-xs">settings.json</code>, aumentando a segurança em ambientes sensíveis.</p>
+        </div>
+
+        <!-- Bearer token -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Bearer Token</h3>
+              <span class="text-xs text-neutral-500">Protocolo HTTP</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Esquema de autenticação HTTP onde o token é enviado no header: <code class="bg-dark-700 px-1 rounded text-xs">Authorization: Bearer SEU_TOKEN</code>. O Claude Code usa este esquema ao se comunicar com APIs de LLM. O valor de <code class="bg-dark-700 px-1 rounded text-xs">ANTHROPIC_AUTH_TOKEN</code> é colocado no lugar de "SEU_TOKEN".
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA C ==================== -->
+    <section id="letra-c" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">C</span>
+        <h2 class="text-2xl font-bold">Termos com C</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- CLAUDE.md -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400 font-mono">CLAUDE.md</h3>
+              <span class="text-xs text-neutral-500">Arquivo de Configuração</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Arquivo Markdown especial na raiz do projeto que o Claude Code lê automaticamente no início de cada sessão. Contém instruções permanentes: convenções do projeto, comandos importantes, estilo de código, contexto do negócio. É o equivalente a "o manual que o dev novo precisa ler antes de começar".
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Bem escrito, o CLAUDE.md elimina a necessidade de repetir contexto toda vez que você abre uma nova sessão. É um dos recursos mais poderosos do Claude Code.</p>
+        </div>
+
+        <!-- Claude Code -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Claude Code</h3>
+              <span class="text-xs text-neutral-500">Interface CLI</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Ferramenta oficial da Anthropic — um agente de programação que opera via linha de comando. Pode ler e editar arquivos, executar comandos de terminal, navegar repositórios e conversar sobre código. Funciona em qualquer terminal padrão.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">A genialidade está na separação: a interface (Claude Code) pode ser usada com diferentes motores de LLM via configuração, sem alterar o comportamento da ferramenta.</p>
+        </div>
+
+        <!-- Compactação -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Compactação de Contexto</h3>
+              <span class="text-xs text-neutral-500">Gerenciamento de Memória</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Processo pelo qual o Claude Code resume o histórico de conversa quando o contexto está ficando cheio. Em vez de parar a sessão, ele comprime o histórico anterior mantendo apenas o essencial, liberando espaço para continuar trabalhando.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Modelos locais via Ollama geralmente têm janela de contexto menor (8K–32K tokens), então a compactação dispara mais frequentemente. Configure <code class="bg-dark-700 px-1 rounded text-xs">autoCompactThreshold</code> para ajustar.</p>
+        </div>
+
+        <!-- Contexto -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">4</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Contexto (Context Window)</h3>
+              <span class="text-xs text-neutral-500">LLM</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            A quantidade máxima de texto (medida em tokens) que um modelo LLM consegue processar de uma vez. Claude 3.5 Sonnet tem 200K tokens; modelos locais via Ollama geralmente entre 8K e 128K. Quanto maior o contexto, mais código e histórico o modelo pode "ver" ao responder.
+          </p>
+        </div>
+
+        <!-- Claude Opus/Sonnet/Haiku -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">5</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Claude Opus / Sonnet / Haiku</h3>
+              <span class="text-xs text-neutral-500">Modelos da Anthropic</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Os três tamanhos dos modelos Claude da Anthropic. <strong class="text-neutral-100">Opus</strong> é o mais poderoso e caro; <strong class="text-neutral-100">Sonnet</strong> é o equilíbrio entre capacidade e custo (o padrão do Claude Code); <strong class="text-neutral-100">Haiku</strong> é o mais rápido e barato, usado para tarefas de background como sugestões de código.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Ao trocar o motor via ANTHROPIC_BASE_URL, você deixa de usar estes modelos e passa a usar o que estiver rodando no servidor alternativo.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA D ==================== -->
+    <section id="letra-d" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">D</span>
+        <h2 class="text-2xl font-bold">Termos com D</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- DISABLE_PROMPT_CACHING -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400 font-mono">DISABLE_PROMPT_CACHING</h3>
+              <span class="text-xs text-neutral-500">Variável de Ambiente</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Quando definida como <code class="bg-dark-700 px-1 rounded text-xs">true</code>, desativa o prompt caching do Claude Code. Por padrão o Claude Code tenta usar caching para reduzir custos com a API da Anthropic. Ao usar Ollama ou OpenRouter, definir esta variável pode evitar erros de compatibilidade com servidores que não suportam a feature.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Alguns proxies e servidores alternativos não implementam a API de prompt caching, retornando erros. Nesse caso, desabilitar resolve o problema.</p>
+        </div>
+
+        <!-- Devstral -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Devstral</h3>
+              <span class="text-xs text-neutral-500">Modelo Open-Source</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Modelo open-source da Mistral AI focado em tarefas de desenvolvimento de software. Excelente para usar com Claude Code via Ollama ou OpenRouter. Performa muito bem em coding benchmarks com tamanho relativamente pequeno (~24B parâmetros), sendo uma opção premium para uso local.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Para rodar localmente: <code class="bg-dark-700 px-1 rounded text-xs">ollama pull devstral</code>. Necessita de GPU com 16GB+ de VRAM para bom desempenho.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA E ==================== -->
+    <section id="letra-e" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">E</span>
+        <h2 class="text-2xl font-bold">Termos com E</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- Endpoint -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Endpoint</h3>
+              <span class="text-xs text-neutral-500">API</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            URL específica de uma API que aceita requisições. O endpoint principal que o Claude Code usa é <code class="bg-dark-700 px-1 rounded text-xs">/v1/messages</code> (API da Anthropic) ou <code class="bg-dark-700 px-1 rounded text-xs">/v1/chat/completions</code> (compatível com OpenAI, usado pelo Ollama). Proxies como LiteLLM traduzem entre os dois formatos.
+          </p>
+        </div>
+
+        <!-- Environment Variables -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Variáveis de Ambiente</h3>
+              <span class="text-xs text-neutral-500">Environment Variables</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Pares chave=valor definidos no sistema operacional, acessíveis por qualquer processo. No Claude Code, são o principal mecanismo de configuração — <code class="bg-dark-700 px-1 rounded text-xs">ANTHROPIC_BASE_URL</code>, <code class="bg-dark-700 px-1 rounded text-xs">ANTHROPIC_AUTH_TOKEN</code>, <code class="bg-dark-700 px-1 rounded text-xs">DISABLE_PROMPT_CACHING</code> e outras.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Podem ser definidas no <code class="bg-dark-700 px-1 rounded text-xs">~/.bashrc</code>, <code class="bg-dark-700 px-1 rounded text-xs">~/.zshrc</code>, no próprio <code class="bg-dark-700 px-1 rounded text-xs">settings.json</code> do Claude Code, ou na sessão de terminal com <code class="bg-dark-700 px-1 rounded text-xs">export VAR=valor</code>.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA F ==================== -->
+    <section id="letra-f" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">F</span>
+        <h2 class="text-2xl font-bold">Termos com F</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- Free tier -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Free Tier</h3>
+              <span class="text-xs text-neutral-500">Modelo de Negócio</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Camada gratuita oferecida por serviços de API com limites de uso (rate limits). O OpenRouter oferece free tier para vários modelos, incluindo opções de alta qualidade como meta-llama/llama-3.3-70b e outros. Ideal para começar sem custos.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Os limites do free tier variam por modelo e podem incluir: número de requisições por minuto, tokens por dia ou por mês. Para uso leve a moderado, o free tier do OpenRouter costuma ser suficiente.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA G ==================== -->
+    <section id="letra-g" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">G</span>
+        <h2 class="text-2xl font-bold">Termos com G</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- GPU -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">GPU</h3>
+              <span class="text-xs text-neutral-500">Hardware</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Placa de vídeo (Graphics Processing Unit). Para rodar modelos LLM localmente com boa velocidade, uma GPU dedicada com memória VRAM é essencial. GPUs da NVIDIA (RTX 3060, 4070, 4090) são as mais compatíveis com frameworks como CUDA que o Ollama usa.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Sem GPU, o Ollama cai para CPU — o que funciona mas é significativamente mais lento (20-50x). Para uso com Claude Code em produção, GPU é altamente recomendado.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA H ==================== -->
+    <section id="letra-h" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">H</span>
+        <h2 class="text-2xl font-bold">Termos com H</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- Haiku background -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Haiku (Modelo Background)</h3>
+              <span class="text-xs text-neutral-500">Claude Code Interno</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            O Claude Code usa Claude Haiku internamente para tarefas de background como completar código inline, sugestões rápidas e análises simples — enquanto usa Sonnet ou Opus para as conversas principais. Ao trocar o motor, essas tarefas de background também passam a usar o modelo alternativo configurado.
+          </p>
+        </div>
+
+        <!-- Hooks -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Hooks</h3>
+              <span class="text-xs text-neutral-500">Automação</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Scripts ou comandos configurados no <code class="bg-dark-700 px-1 rounded text-xs">settings.json</code> que são executados automaticamente em eventos específicos do Claude Code, como antes de uma sessão iniciar (<code class="bg-dark-700 px-1 rounded text-xs">PreSessionStart</code>) ou depois de uma ferramenta ser executada (<code class="bg-dark-700 px-1 rounded text-xs">PostToolUse</code>).
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Exemplos de uso: rodar linter automaticamente após edição de código, fazer backup antes de refatorações, notificar via Slack quando uma tarefa longa termina.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA I ==================== -->
+    <section id="letra-i" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">I</span>
+        <h2 class="text-2xl font-bold">Termos com I</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- iframe -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400 font-mono">iframe</h3>
+              <span class="text-xs text-neutral-500">HTML / Interface</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Elemento HTML que incorpora uma página dentro de outra. Nos materiais do curso INEMA.CLUB, modais usam iframes para carregar páginas de módulo completas sem duplicar código. No contexto do Claude Code, pode ser relevante ao construir dashboards ou interfaces de preview.
+          </p>
+        </div>
+
+        <!-- INEMA.CLUB -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400"><a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></h3>
+              <span class="text-xs text-neutral-500">Plataforma</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Plataforma de cursos e conteúdo técnico em português onde este curso está hospedado. Focada em automação, inteligência artificial e produtividade para desenvolvedores e profissionais técnicos.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA J ==================== -->
+    <section id="letra-j" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">J</span>
+        <h2 class="text-2xl font-bold">Termos com J</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- JSON / settings.json -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400 font-mono">JSON (settings.json)</h3>
+              <span class="text-xs text-neutral-500">Formato de Configuração</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            JavaScript Object Notation — formato leve de dados baseado em pares chave-valor. O <code class="bg-dark-700 px-1 rounded text-xs">settings.json</code> do Claude Code usa JSON para armazenar todas as configurações: permissões, variáveis de ambiente, hooks, comportamentos padrão. Localizado em <code class="bg-dark-700 px-1 rounded text-xs">~/.claude/settings.json</code>.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA L ==================== -->
+    <section id="letra-l" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">L</span>
+        <h2 class="text-2xl font-bold">Termos com L</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- LLM -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">LLM</h3>
+              <span class="text-xs text-neutral-500">Large Language Model</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Modelo de linguagem grande — a classe de modelos de IA que compreende e gera texto. GPT-4, Claude, LLaMA, Qwen e Mistral são todos LLMs. O Claude Code é uma interface que se comunica com LLMs via API para executar tarefas de programação.
+          </p>
+        </div>
+
+        <!-- LM Studio -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">LM Studio</h3>
+              <span class="text-xs text-neutral-500">Aplicação Desktop</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Aplicação desktop com interface gráfica para baixar e rodar modelos LLM localmente no Windows, Mac e Linux. Alternativa ao Ollama para quem prefere interface visual. Também expõe um servidor local compatível com a API OpenAI, podendo ser usado com Claude Code via ANTHROPIC_BASE_URL.
+          </p>
+        </div>
+
+        <!-- localhost -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400 font-mono">localhost</h3>
+              <span class="text-xs text-neutral-500">Rede</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Endereço de rede que aponta para a própria máquina (equivalente a <code class="bg-dark-700 px-1 rounded text-xs">127.0.0.1</code>). Quando o Ollama está rodando localmente, seu servidor fica acessível em <code class="bg-dark-700 px-1 rounded text-xs">http://localhost:11434</code>. É para este endereço que você aponta o <code class="bg-dark-700 px-1 rounded text-xs">ANTHROPIC_BASE_URL</code>.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA M ==================== -->
+    <section id="letra-m" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">M</span>
+        <h2 class="text-2xl font-bold">Termos com M</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- MCP -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">MCP — Model Context Protocol</h3>
+              <span class="text-xs text-neutral-500">Protocolo de Extensão</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Protocolo aberto da Anthropic que permite ao Claude Code se conectar a ferramentas e fontes de dados externas via servidores padronizados. Com MCP você pode integrar banco de dados, APIs, serviços de busca, GitHub, Notion e muito mais diretamente no fluxo de trabalho do Claude Code.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Servidores MCP são configurados no <code class="bg-dark-700 px-1 rounded text-xs">settings.json</code>. A comunidade já publicou centenas de servidores MCP open-source para as ferramentas mais populares.</p>
+        </div>
+
+        <!-- Modal -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Modal (vLLM na Nuvem)</h3>
+              <span class="text-xs text-neutral-500">Cloud Computing</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Plataforma de computação em nuvem que permite rodar código Python (incluindo servidores vLLM) sob demanda, pagando apenas pelo tempo de uso. Ótima opção para hospedar modelos grandes sem manter infraestrutura própria — custo muito baixo para uso esporádico.
+          </p>
+        </div>
+
+        <!-- Modelo Quantizado -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Modelo Quantizado</h3>
+              <span class="text-xs text-neutral-500">Otimização de Modelos</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Versão comprimida de um modelo LLM onde os pesos são armazenados com menor precisão numérica (ex: Q4, Q5, Q8 no formato GGUF). Resultado: modelos menores que cabem em menos VRAM, com velocidade maior. Há perda mínima de qualidade nas quantizações mais altas (Q5, Q8).
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">O Ollama baixa automaticamente versões quantizadas dos modelos. Um modelo de 70B parâmetros em Q4 requer ~40GB VRAM, vs ~140GB em precisão total.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA N ==================== -->
+    <section id="letra-n" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">N</span>
+        <h2 class="text-2xl font-bold">Termos com N</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- Node.js -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Node.js</h3>
+              <span class="text-xs text-neutral-500">Runtime JavaScript</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Ambiente de execução JavaScript no servidor/terminal. O Claude Code é uma aplicação Node.js instalada via npm. É obrigatório ter Node.js v18 ou superior instalado para usar o Claude Code. No Linux: instale via <code class="bg-dark-700 px-1 rounded text-xs">nvm</code> para facilitar o gerenciamento de versões.
+          </p>
+        </div>
+
+        <!-- npm -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400 font-mono">npm</h3>
+              <span class="text-xs text-neutral-500">Gerenciador de Pacotes</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Node Package Manager — gerenciador de pacotes do ecossistema Node.js. O Claude Code é instalado com o comando <code class="bg-dark-700 px-1 rounded text-xs">npm install -g @anthropic-ai/claude-code</code>. A flag <code class="bg-dark-700 px-1 rounded text-xs">-g</code> instala globalmente, tornando o comando <code class="bg-dark-700 px-1 rounded text-xs">claude</code> disponível em qualquer diretório.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA O ==================== -->
+    <section id="letra-o" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">O</span>
+        <h2 class="text-2xl font-bold">Termos com O</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- Ollama -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Ollama</h3>
+              <span class="text-xs text-neutral-500">Runtime de Modelos Locais</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Ferramenta open-source que simplifica o download e execução de modelos LLM localmente. Com um único comando (<code class="bg-dark-700 px-1 rounded text-xs">ollama pull qwen2.5-coder</code>), você baixa e configura um modelo. O Ollama expõe uma API REST local na porta 11434, compatível com OpenAI — que pode ser usada como motor do Claude Code.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Site oficial: <strong>ollama.ai</strong>. Disponível para Linux, macOS e Windows. Suporta aceleração via GPU (NVIDIA CUDA e AMD ROCm).</p>
+        </div>
+
+        <!-- OpenRouter -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">OpenRouter</h3>
+              <span class="text-xs text-neutral-500">API Proxy / Marketplace</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Serviço que agrega centenas de modelos LLM (Claude, GPT, Gemini, Mistral, LLaMA e outros) sob uma única API com interface compatível com OpenAI. Oferece free tier para muitos modelos e tarifas pay-as-you-go para o restante. Ideal para usar Claude Code sem GPU.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Configure Claude Code apontando <code class="bg-dark-700 px-1 rounded text-xs">ANTHROPIC_BASE_URL</code> para <code class="bg-dark-700 px-1 rounded text-xs">https://openrouter.ai/api/v1</code> e use sua API Key do OpenRouter no token.</p>
+        </div>
+
+        <!-- Opus -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Opus</h3>
+              <span class="text-xs text-neutral-500">Modelo Claude</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            O modelo mais capaz da linha Claude da Anthropic. Claude Opus excele em raciocínio complexo, análises profundas e tarefas de alta precisão. É mais lento e caro que Sonnet/Haiku, sendo ideal para tarefas críticas onde a qualidade supera o custo.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA P ==================== -->
+    <section id="letra-p" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">P</span>
+        <h2 class="text-2xl font-bold">Termos com P</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- Permissões -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Permissões</h3>
+              <span class="text-xs text-neutral-500">Segurança / settings.json</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Sistema de controle de acesso do Claude Code que define quais ações o agente pode executar sem confirmação do usuário. Configuradas em <code class="bg-dark-700 px-1 rounded text-xs">settings.json</code> via listas <code class="bg-dark-700 px-1 rounded text-xs">allow</code> e <code class="bg-dark-700 px-1 rounded text-xs">deny</code>. Permite automatizar workflows sem interrupções mantendo controle sobre ações críticas.
+          </p>
+        </div>
+
+        <!-- Prompt Caching -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Prompt Caching</h3>
+              <span class="text-xs text-neutral-500">Otimização de Custo</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Feature da API da Anthropic que armazena partes do contexto (como CLAUDE.md e arquivos frequentes) no servidor, evitando reprocessamento e reduzindo custos em até 90%. O Claude Code usa prompt caching automaticamente. Ao usar motores alternativos, desative com <code class="bg-dark-700 px-1 rounded text-xs">DISABLE_PROMPT_CACHING=true</code> se o servidor não suportar.
+          </p>
+        </div>
+
+        <!-- PowerShell -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">PowerShell</h3>
+              <span class="text-xs text-neutral-500">Terminal Windows</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Shell de linha de comando do Windows. O Claude Code não suporta PowerShell nativamente — no Windows, use o WSL (Windows Subsystem for Linux) para ter um ambiente Linux completo onde o Claude Code funciona perfeitamente.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA Q ==================== -->
+    <section id="letra-q" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">Q</span>
+        <h2 class="text-2xl font-bold">Termos com Q</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- Qwen -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Qwen (Série de Modelos)</h3>
+              <span class="text-xs text-neutral-500">Alibaba / Open-Source</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Família de modelos open-source da Alibaba Cloud. O <strong class="text-neutral-100">Qwen2.5-Coder</strong> é especialmente popular para uso com Claude Code via Ollama — oferece excelente performance em tarefas de programação com tamanhos que vão de 1.5B a 72B parâmetros, cabendo em hardware modesto.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Comando: <code class="bg-dark-700 px-1 rounded text-xs">ollama pull qwen2.5-coder:7b</code> para a versão de 7B (recomendada para GPUs de 8GB).</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA R ==================== -->
+    <section id="letra-r" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">R</span>
+        <h2 class="text-2xl font-bold">Termos com R</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- RAM -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">RAM</h3>
+              <span class="text-xs text-neutral-500">Hardware</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Memória de acesso aleatório do computador. Quando não há GPU, o Ollama carrega os modelos na RAM do sistema. Isso é muito mais lento, mas funciona. Um modelo de 7B requer ~8GB de RAM; um de 13B requer ~16GB. Com GPU, a RAM relevante é a VRAM (memória da placa de vídeo).
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA S ==================== -->
+    <section id="letra-s" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">S</span>
+        <h2 class="text-2xl font-bold">Termos com S</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- settings.json -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400 font-mono">settings.json</h3>
+              <span class="text-xs text-neutral-500">Arquivo de Configuração Principal</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Arquivo JSON de configuração global do Claude Code, localizado em <code class="bg-dark-700 px-1 rounded text-xs">~/.claude/settings.json</code>. Contém permissões, variáveis de ambiente, configurações de hooks, servers MCP, comportamentos padrão e qualquer outra customização. Existe também um <code class="bg-dark-700 px-1 rounded text-xs">settings.local.json</code> para overrides pessoais.
+          </p>
+        </div>
+
+        <!-- Slash Commands -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Slash Commands</h3>
+              <span class="text-xs text-neutral-500">Interface Claude Code</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Comandos especiais digitados com <code class="bg-dark-700 px-1 rounded text-xs">/</code> dentro do chat do Claude Code. Exemplos nativos: <code class="bg-dark-700 px-1 rounded text-xs">/clear</code> (limpa contexto), <code class="bg-dark-700 px-1 rounded text-xs">/compact</code> (compacta histórico), <code class="bg-dark-700 px-1 rounded text-xs">/doctor</code> (diagnóstico), <code class="bg-dark-700 px-1 rounded text-xs">/help</code>. Você pode criar slash commands customizados salvando arquivos <code class="bg-dark-700 px-1 rounded text-xs">.md</code> em <code class="bg-dark-700 px-1 rounded text-xs">~/.claude/commands/</code>.
+          </p>
+        </div>
+
+        <!-- SWE-bench -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">SWE-bench</h3>
+              <span class="text-xs text-neutral-500">Benchmark de Programação</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Benchmark da indústria que avalia capacidade de agentes de IA em resolver issues reais do GitHub em repositórios Python populares. O Claude Code, quando lançado, alcançou 72.5% no SWE-bench Verified — o melhor resultado disponível publicamente na época. É a métrica padrão para comparar agentes de programação.
+          </p>
+        </div>
+
+        <!-- SSH -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">4</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">SSH</h3>
+              <span class="text-xs text-neutral-500">Acesso Remoto Seguro</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Secure Shell — protocolo para acesso remoto seguro a servidores via terminal. Relevante para usar Claude Code em VPS (ex: servidor com Ollama), para acessar ambientes de desenvolvimento remotos, ou para configurar servidores vLLM na nuvem que serão usados como motor do Claude Code.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA T ==================== -->
+    <section id="letra-t" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">T</span>
+        <h2 class="text-2xl font-bold">Termos com T</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- Token -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">Token</h3>
+              <span class="text-xs text-neutral-500">Unidade de Processamento LLM</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Unidade básica de texto que um LLM processa. Não é exatamente uma palavra — pode ser uma sílaba, palavra completa ou pontuação. Em inglês, 1 token ≈ 4 caracteres; em português, um pouco mais por causa dos acentos. APIs cobram por token de entrada e saída.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Com Ollama ou OpenRouter free tier, tokens são "gratuitos" — o custo é elétrico (local) ou limitado por rate limits (free tier).</p>
+        </div>
+
+        <!-- tmux -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400 font-mono">tmux</h3>
+              <span class="text-xs text-neutral-500">Multiplexador de Terminal</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Ferramenta que permite manter múltiplas sessões de terminal simultâneas e persistentes (sobrevivem a desconexões SSH). Muito útil para usar Claude Code: deixe Ollama rodando em uma janela e Claude Code em outra, sem medo de perder o estado ao fechar o terminal.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Instale com <code class="bg-dark-700 px-1 rounded text-xs">apt install tmux</code>. Comandos básicos: <code class="bg-dark-700 px-1 rounded text-xs">tmux new -s nome</code>, <code class="bg-dark-700 px-1 rounded text-xs">Ctrl+B D</code> para desanexar, <code class="bg-dark-700 px-1 rounded text-xs">tmux attach -t nome</code> para reanexar.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA V ==================== -->
+    <section id="letra-v" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">V</span>
+        <h2 class="text-2xl font-bold">Termos com V</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- VPS -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">VPS</h3>
+              <span class="text-xs text-neutral-500">Virtual Private Server</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Servidor virtual privado na nuvem. Você pode alugar uma VPS com GPU para rodar Ollama ou vLLM de forma permanente, acessando remotamente via SSH. Provedores como Vast.ai, RunPod e Lambda Labs oferecem VPS com GPU a preços acessíveis — ótima opção para quem não tem GPU local.
+          </p>
+        </div>
+
+        <!-- VRAM -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">VRAM</h3>
+              <span class="text-xs text-neutral-500">Video RAM / Memória da GPU</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Memória dedicada da placa de vídeo (GPU). Para rodar modelos LLM com boa velocidade, o modelo precisa caber na VRAM. Referência: <strong class="text-neutral-100">8GB VRAM</strong> → modelos até ~7B parâmetros (Q4); <strong class="text-neutral-100">16GB</strong> → até ~13B; <strong class="text-neutral-100">24GB</strong> → até ~34B; <strong class="text-neutral-100">80GB</strong> → modelos grandes de 70B+.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Com quantização Q4, os modelos cabem em menos VRAM com mínima perda de qualidade. Verifique sua VRAM com <code class="bg-dark-700 px-1 rounded text-xs">nvidia-smi</code>.</p>
+        </div>
+
+        <!-- vLLM -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">vLLM</h3>
+              <span class="text-xs text-neutral-500">Servidor de Inferência</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Framework Python de alto desempenho para servir modelos LLM, especialmente otimizado para throughput alto em produção. Usa técnicas como PagedAttention para maximizar uso de VRAM. Ideal para times que precisam atender múltiplos usuários simultaneamente com um único servidor de LLM.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">Para uso pessoal/individual, Ollama é mais fácil. Para produção com múltiplos usuários, vLLM oferece melhor performance e controle.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LETRA W ==================== -->
+    <section id="letra-w" class="letter-section mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-2xl">W</span>
+        <h2 class="text-2xl font-bold">Termos com W</h2>
+      </div>
+      <div class="space-y-4">
+
+        <!-- WSL -->
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <div class="flex items-start space-x-3 mb-3">
+            <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-rose-400">WSL — Windows Subsystem for Linux</h3>
+              <span class="text-xs text-neutral-500">Camada de Compatibilidade Windows</span>
+            </div>
+          </div>
+          <p class="text-neutral-300 text-sm leading-relaxed ml-9">
+            Subsistema do Windows que permite rodar um ambiente Linux completo diretamente no Windows 10/11, sem máquina virtual. Essencial para usar Claude Code no Windows — a ferramenta precisa de ambiente Unix/Linux para funcionar corretamente. Instale via <code class="bg-dark-700 px-1 rounded text-xs">wsl --install</code> no PowerShell como administrador.
+          </p>
+          <p class="text-neutral-400 text-sm mt-2 ml-9">WSL 2 (versão atual) usa o kernel Linux real via VM leve, oferecendo compatibilidade praticamente total com software Linux. O Ollama também tem versão nativa para Windows, mas para Claude Code o WSL é o caminho recomendado.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CTA BOTTOM -->
+    <div class="bg-gradient-to-br from-rose-900/30 via-dark-800 to-dark-800 rounded-xl border border-rose-500/30 p-8 mb-8">
+      <h2 class="text-2xl font-bold mb-4">📚 Continue Aprendendo</h2>
+      <p class="text-neutral-400 mb-6">Este glossário é um referência viva — novos termos são adicionados conforme o curso evolui. Volte às trilhas para ver os conceitos em ação.</p>
+      <div class="flex flex-wrap gap-3 justify-start">
+        <a href="index.html" class="px-4 py-2 text-sm bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">← Voltar ao Início</a>
+        <a href="curso/trilha1/index.html" class="px-4 py-2 text-sm bg-emerald-600/80 hover:bg-emerald-600 text-white rounded-lg transition-colors">T1: Fundamentos</a>
+        <a href="curso/trilha3/index.html" class="px-4 py-2 text-sm bg-purple-600/80 hover:bg-purple-600 text-white rounded-lg transition-colors">T3: Ollama Local</a>
+        <a href="curso/trilha4/index.html" class="px-4 py-2 text-sm bg-amber-600/80 hover:bg-amber-600 text-white rounded-lg transition-colors">T4: OpenRouter</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center space-x-3">
+          <span class="text-2xl">📖</span>
+          <div>
+            <p class="font-bold text-neutral-100">Glossário ABC</p>
+            <p class="text-xs text-neutral-500">Claude Code Open — INEMA.CLUB</p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-2 text-sm text-neutral-500">
+          <a href="index.html" class="text-rose-400 hover:text-rose-300">← Página Inicial</a>
+          <span>|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 font-medium">INEMA.CLUB</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+      html.classList.add('dark');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

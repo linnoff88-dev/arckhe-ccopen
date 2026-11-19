@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 3.3: Configurando Claude Code + Ollama | Claude Code Open</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🤖</span>
+            <span class="font-bold text-lg hidden sm:inline">Claude Code Open</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span><span class="hidden sm:inline">Instalação</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span><span class="hidden sm:inline">Ollama Local</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span><span class="hidden sm:inline">OpenRouter</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span><span class="hidden sm:inline">Na Prática</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Início</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a>
+      <span>/</span>
+      <span class="text-purple-400">Módulo 3.3</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        MÓDULO 3.3
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">⚙️ Configurando Claude Code + Ollama</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Conecte Claude Code ao Ollama em 3 opções: comando rápido, variáveis de ambiente ou settings.json permanente.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Tópicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Inter.</div>
+          <div class="text-xs text-neutral-400">Nível</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Config</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- SEÇÃO 1: Como CC conecta ao Ollama -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🔌 Como Claude Code Conecta ao Ollama</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Claude Code usa uma variável de ambiente chamada <strong class="text-purple-400">ANTHROPIC_BASE_URL</strong> para saber para qual servidor enviar as requisições. Por padrão, aponta para os servidores da Anthropic. Basta mudar essa URL para apontar para o Ollama local.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🔌</span> O Mecanismo de Redirecionamento
+        </h3>
+        <div class="space-y-4 text-neutral-300">
+          <p>Quando você define <code class="bg-dark-700 px-2 py-0.5 rounded text-purple-400">ANTHROPIC_BASE_URL="http://localhost:11434"</code>, toda requisição do Claude Code vai para o Ollama em vez da Anthropic.</p>
+          <p>O Ollama finge ser a API da Anthropic (usando o formato OpenAI compatível) e retorna as respostas do modelo local no mesmo formato esperado.</p>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Variáveis de Ambiente Necessárias
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li><code class="bg-dark-700 px-2 py-0.5 rounded text-purple-400">ANTHROPIC_BASE_URL</code> — URL do servidor local Ollama (<code class="text-sm">http://localhost:11434</code>)</li>
+          <li><code class="bg-dark-700 px-2 py-0.5 rounded text-purple-400">ANTHROPIC_AUTH_TOKEN</code> — token de autenticação (qualquer valor, ex: "ollama")</li>
+          <li><code class="bg-dark-700 px-2 py-0.5 rounded text-purple-400">ANTHROPIC_API_KEY</code> — deve ser limpa ("") para não conflitar</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 2: Opção A -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">⚡ Opção A: ollama launch claude</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A forma mais simples. Um único comando configura tudo automaticamente e inicia o Claude Code apontando para o Ollama. <strong class="text-purple-400">Ideal para uso rápido e ocasional</strong>.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">⚡</span> Comando Completo
+        </h3>
+        <div class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto mb-4">
+          <code class="text-green-400"># Certifique-se que Ollama está rodando, então:
+ollama launch claude</code>
+        </div>
+        <p class="text-neutral-400 text-sm">Este comando detecta o modelo instalado, configura as variáveis e inicia o Claude Code. O modelo padrão é o último baixado.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Vantagens</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Comando único, sem configuração manual</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Detecta automaticamente o modelo disponível</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Não modifica arquivos de configuração permanentes</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Limitações</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Configuração não persiste — precisa repetir a cada sessão</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Menos controle sobre qual modelo específico usar</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Pode não estar disponível em versões antigas do Ollama</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 3: Opção B -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🔧 Opção B: Variáveis de Ambiente</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Definir as variáveis manualmente via <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">export</code> no terminal antes de executar o claude. Oferece <strong class="text-purple-400">controle total sobre qual modelo usar</strong> e é fácil de alternar entre Ollama e Anthropic.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🔧</span> Configuração Completa
+        </h3>
+        <div class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto mb-4">
+          <code class="text-green-400 whitespace-pre"># Passo 1: Definir variáveis (sessão atual)
+export ANTHROPIC_BASE_URL="http://localhost:11434"
+export ANTHROPIC_AUTH_TOKEN="ollama"
+export ANTHROPIC_API_KEY=""
+
+# Passo 2: Iniciar Claude Code com o modelo desejado
+claude --model qwen3-coder</code>
+        </div>
+        <p class="text-neutral-400 text-sm">As variáveis ficam ativas apenas na sessão atual do terminal. Fechar o terminal e abrir outro requer repetir os exports.</p>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica: Criar um Alias
+        </h3>
+        <p class="text-neutral-300 mb-3">Para não repetir os exports toda vez, adicione um alias no seu <code class="bg-dark-700 px-1 rounded">~/.bashrc</code> ou <code class="bg-dark-700 px-1 rounded">~/.zshrc</code>:</p>
+        <div class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto">
+          <code class="text-green-400 whitespace-pre">alias cc-ollama='ANTHROPIC_BASE_URL="http://localhost:11434" \
+  ANTHROPIC_AUTH_TOKEN="ollama" \
+  ANTHROPIC_API_KEY="" \
+  claude --model qwen3-coder'</code>
+        </div>
+        <p class="text-neutral-400 text-sm mt-3">Depois: <code class="bg-dark-700 px-1 rounded">cc-ollama</code> inicia o Claude Code com Ollama em um único comando.</p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 4: Opção C -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">💾 Opção C: settings.json Permanente</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A opção mais conveniente para quem usa Ollama como backend padrão. Configurar uma vez no <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">~/.claude/settings.json</code> e o Claude Code sempre vai usar Ollama ao iniciar.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">💾</span> Arquivo de Configuração
+        </h3>
+        <p class="text-neutral-400 text-sm mb-3">Caminho: <code class="bg-dark-700 px-2 py-0.5 rounded">~/.claude/settings.json</code></p>
+        <div class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto mb-4">
+          <code class="text-green-400 whitespace-pre">{
+  "env": {
+    "ANTHROPIC_BASE_URL": "http://localhost:11434",
+    "ANTHROPIC_AUTH_TOKEN": "ollama",
+    "ANTHROPIC_API_KEY": ""
+  }
+}</code>
+        </div>
+        <p class="text-neutral-400 text-sm">O bloco <code class="bg-dark-700 px-1 rounded">"env"</code> define variáveis que Claude Code carrega automaticamente ao iniciar.</p>
+      </div>
+
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+            <span class="text-purple-400 font-bold">1</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Criar ou Editar o Arquivo</h4>
+            <p class="text-sm text-neutral-400 mb-3">Se o arquivo não existe, crie-o</p>
+            <div class="bg-dark-700 rounded-lg p-3 text-sm overflow-x-auto">
+              <code class="text-green-400">mkdir -p ~/.claude && nano ~/.claude/settings.json</code>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+            <span class="text-purple-400 font-bold">2</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Adicionar o Bloco env</h4>
+            <p class="text-sm text-neutral-400 mb-3">Colar o JSON de configuração</p>
+            <div class="bg-dark-700 rounded-lg p-3 text-sm overflow-x-auto">
+              <code class="text-green-400 whitespace-pre">{ "env": { "ANTHROPIC_BASE_URL": "http://localhost:11434",
+  "ANTHROPIC_AUTH_TOKEN": "ollama", "ANTHROPIC_API_KEY": "" } }</code>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+            <span class="text-purple-400 font-bold">3</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Iniciar Claude Code Normalmente</h4>
+            <p class="text-sm text-neutral-400 mb-3">Sem nenhuma variável extra — a config é carregada automaticamente</p>
+            <div class="bg-dark-700 rounded-lg p-3 text-sm overflow-x-auto">
+              <code class="text-green-400">claude --model qwen3-coder</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 5: Primeiro login -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🔑 Primeiro Login com Ollama</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Na primeira execução com as variáveis configuradas, o Claude Code pode apresentar o fluxo de autenticação. <strong class="text-purple-400">Selecione "Anthropic Console account"</strong> e use a sua API key normal — ela é necessária apenas para autenticar o app, não para as chamadas ao Ollama.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🔑</span> Fluxo de Autenticação
+        </h3>
+        <div class="space-y-3 text-neutral-300">
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 font-bold w-6">1.</span>
+            <span>Inicie o Claude Code: <code class="bg-dark-700 px-1 rounded">claude --model qwen3-coder</code></span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 font-bold w-6">2.</span>
+            <span>Se aparecer menu de autenticação, selecione <strong>"Anthropic Console account"</strong></span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 font-bold w-6">3.</span>
+            <span>Forneça sua API key da Anthropic (usada apenas para autenticar o app)</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 font-bold w-6">4.</span>
+            <span>A partir daí, todas as chamadas de modelo vão para o Ollama local</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">💡</span> Por que ainda precisa da API key?
+        </h3>
+        <p class="text-neutral-300">Claude Code usa a API key da Anthropic para autenticação e billing tracking do próprio app. As chamadas de inferência (geração de texto) vão para o Ollama e <strong>não geram cobrança</strong>. A autenticação é separada do backend de modelo.</p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 6: Como voltar ao Anthropic -->
+    <section id="topico-6" class="mb-12">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">↩️ Como Voltar ao Anthropic</h2>
+      </div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Alternar de volta para o Claude da Anthropic é simples. O processo depende de qual método de configuração você usou para conectar ao Ollama.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-semibold text-purple-400 mb-3">Se usou variáveis (Opção B)</h4>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto mb-3">
+            <code class="text-green-400 whitespace-pre">unset ANTHROPIC_BASE_URL
+unset ANTHROPIC_AUTH_TOKEN
+unset ANTHROPIC_API_KEY
+claude  # usa Anthropic normalmente</code>
+          </div>
+          <p class="text-neutral-400 text-sm">Válido apenas na sessão atual. Novas sessões já iniciam sem as variáveis.</p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-semibold text-purple-400 mb-3">Se usou settings.json (Opção C)</h4>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto mb-3">
+            <code class="text-green-400 whitespace-pre"># Editar ~/.claude/settings.json
+# Remover o bloco "env":
+{
+  # apenas outras configurações
+}</code>
+          </div>
+          <p class="text-neutral-400 text-sm">Persiste permanentemente até você editar o arquivo novamente.</p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🔄</span> Fluxo Recomendado para Alternar
+        </h3>
+        <div class="bg-dark-700 rounded-lg p-4 text-sm overflow-x-auto">
+          <code class="text-green-400 whitespace-pre"># Usar Ollama (rápido/offline/gratuito):
+export ANTHROPIC_BASE_URL="http://localhost:11434"
+export ANTHROPIC_AUTH_TOKEN="ollama"
+export ANTHROPIC_API_KEY=""
+claude --model qwen3-coder
+
+# Na mesma sessão, voltar para Anthropic (máxima qualidade):
+unset ANTHROPIC_BASE_URL
+unset ANTHROPIC_AUTH_TOKEN
+unset ANTHROPIC_API_KEY
+claude  # usa Claude 3.7 Sonnet da Anthropic</code>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/40 p-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">🎯</span> Quando Usar Cada Backend
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400">🦙</span>
+            <span><strong>Ollama:</strong> exploração, refatoração simples, código privado, sem internet, uso intensivo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-primary">🤖</span>
+            <span><strong>Anthropic:</strong> tarefas complexas, código crítico, problemas difíceis, análise profunda</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Módulo
+        </h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">ANTHROPIC_BASE_URL é a chave</strong>
+              <span class="text-neutral-400"> — aponta para localhost:11434 para usar Ollama</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">3 métodos de configuração</strong>
+              <span class="text-neutral-400"> — A: rápido (ollama launch), B: variáveis, C: settings.json permanente</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">settings.json é a mais conveniente</strong>
+              <span class="text-neutral-400"> — configura uma vez, usa sempre</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">API key ainda é necessária</strong>
+              <span class="text-neutral-400"> — para autenticar o app CC, não para as chamadas ao Ollama</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Alternar é simples</strong>
+              <span class="text-neutral-400"> — unset das variáveis devolve ao Anthropic imediatamente</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-purple-400 mb-2">Próximo Módulo:</h3>
+          <p class="text-neutral-300">3.4 — vLLM: Alternativa Avançada para hardware com GPU dedicada</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-3-2.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Módulo Anterior
+          </a>
+          <a href="modulo-3-4.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+            Próximo Módulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Claude Code Open - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>
